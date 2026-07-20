@@ -1,0 +1,3 @@
+interface:
+  display_name: "Logging Issues"
+  short_description: "Record issues, context, and fixes"
