@@ -22,5 +22,5 @@ scripts/link-skills.sh
 
 #### Model-invoked
 
-- **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Log nontrivial issues into `docs/issues/` as they're solved: context, root cause, repro, pinned environment. Sweeps at milestone end; recalls past entries when a new error looks familiar.
-- **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Seal a contract on a milestone's targets and a mock of the final verification report before implementation; fill the same skeleton with real evidence at the end.
+- **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Log nontrivial issues into `docs/issues/` as they're solved: attempts tried, root cause, repro, cost, pinned environment. Progressive-disclosure index plus per-milestone detail files with stable IDs; sweeps at milestone end; recalls past entries when a new error looks familiar.
+- **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Lock a milestone's targets and gates and confirm the cumulative final report's layout before implementation; fill the report with real evidence — in its declared verification environment, citing issue IDs — at milestone end.

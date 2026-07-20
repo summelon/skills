@@ -1,61 +1,45 @@
 ---
 name: aligning-targets
-description: Seal a contract on a milestone's targets and a mock of the final verification report before implementation, then fill that report with real evidence at the end. Use when a plan or grilling session lands a milestone, when the user asks to confirm targets or the report's layout, or when milestone work is declared done.
+description: Lock a milestone's targets and gates before implementation, and confirm the layout of the cumulative final report so a long build can't diverge from the user's goals — in outcome or in how it's reported. Fill the report with real evidence at milestone end. Use when a plan or grilling session lands a milestone, when the user asks to lock targets or confirm the report's layout, or when milestone work is declared done.
 ---
 
 # Aligning Targets
 
-Long development diverges silently from the user's goals — in the outcome, and in how the outcome is reported. This skill kills both: before implementation the user confirms a **mock** of the final verification report; at the end the same skeleton is filled with real evidence. The sealed mock is the **contract**.
+Long development diverges silently from the user's goals — in the outcome, and in how the outcome is reported. This skill kills both. Per milestone it fires at two points: at the **start** the user locks the targets and the format of the report rows this milestone will add; at the **end** those rows are filled with real evidence. The locked decisions are the contract.
 
-The mock is the main event. Targets are usually already aligned by the grilling or planning session that landed the milestone — confirm them briefly, then spend the iteration on the report's layout, sections, and evidence types.
+Confirming the report's **format and layout** is the main event — a long build most often disappoints not by missing the target but by reporting it in a shape the user didn't want. Targets are usually already aligned by the grilling or planning session that landed the milestone; confirm them, then spend the iteration on the report.
 
 ## Artifacts
 
-Both live in `docs/targets/`, `<name>` mirroring the milestone doc's filename (ad-hoc work: a topic slug):
+- **Targets** live **in the milestone file** — the skill sharpens its Goal / Scope / **Gates** in place. No separate targets artifact.
+- **The report** is one cumulative `docs/targets/FINAL_REPORT.md` for the whole effort. Each milestone confirms the format of the rows it adds, then appends them — the report grows into the full picture rather than fragmenting into a file per milestone.
 
-- `docs/targets/<name>.targets.md` — the contract: achievements, non-goals, example report.
-- `docs/targets/<name>.report.md` — the filled verification report, written at the end.
+## Gates
 
-## Branch: seal the contract — before implementation
+A **gate** is a milestone target's pass condition. Each gate declares two things:
 
-1. **Pull targets.** Gather achievements from the milestone spec and the conversation. Each achievement must be checkable and name its demo method — a command, a test, or a UI flow. List non-goals: the divergence fence. Confirm briefly with the user.
-2. **Mock the report.** Draft the example verification report in markdown — the exact skeleton the final report will fill. Placeholder evidence only: `[screenshot: mask overlay visible after Segment click]`, tables with `(example)` values. No prototypes, no code — the user wants the skeleton, not a demo.
-3. **Iterate until sealed.** Present the mock; revise layout and content until the user explicitly confirms. Write `docs/targets/<name>.targets.md`. **Implementation must not start before the seal** — no "assumed approved".
+- **Pass condition** — checkable. A number or threshold is best (`IoU > 0.99`, `peak diff < 200 MiB`); a binary observable is fine (`clicking Segment renders a mask overlay, no console errors`). Prose is allowed when nothing measurable fits, but prefer the measurable form.
+- **Verification environment** — where the evidence must be produced: real GPU (which device, which pinned env) versus fake runtime or CPU. **Evidence from the wrong environment cannot close the gate** — fake-runtime output against a real-GPU gate is a non-closure, surfaced, never smoothed over. This is the most common silent divergence; the declaration is what prevents it.
 
-Contract template:
+## Branch: lock — at milestone start
 
-```markdown
-# Targets — <milestone name>
-
-Milestone: [<milestone name>](../milestones/<milestone_file>.md)
-Sealed: YYYY-MM-DD
-
-## Targeted achievements
-
-1. <achievement> — demo: <command / test / UI flow>
-
-## Non-goals
-
-- <explicitly out of scope>
-
-## Example verification report
-
-<the mock: the exact skeleton the final report will fill>
-```
+1. **Lock targets.** Gather the milestone's targets from its spec and the conversation. Write each as a checkable gate (pass condition + verification environment) into the milestone file. Confirm with the user.
+2. **Confirm the report format.** Draft, in markdown, the exact rows/sections this milestone will add to `FINAL_REPORT.md` — the layout the final evidence will fill. Placeholder evidence only: `(example)` values, `[screenshot: mask overlay after Segment click]`. The shape fits the project: a numeric results table (overhead / memory / parity across dtype × runtime) **or** a UI verification walkthrough (a numbered click-path plus a screenshot slot). No prototypes, no code — the user wants the skeleton, not a demo.
+3. **Iterate until locked.** Present the format; revise until the user explicitly confirms. **Implementation must not start before the lock** — no "assumed approved".
 
 ## During implementation
 
-A **contract-level** change — an achievement becomes unreachable or changes meaning, a non-goal is about to be violated, a report section is obsolete — stops the work: surface it and re-confirm with the user at that moment. Silent divergence is the failure this skill exists to kill.
+A **gate-level** change — a gate becomes unreachable or changes meaning, its verification environment shifts, a locked scope line is about to be violated — stops the work: surface it and re-confirm with the user at that moment. Silent divergence is the failure this skill exists to kill.
 
 **Evidence-level** surprises — cosmetic output differences, minor extra findings — don't interrupt; they go to the report's Deviations section.
 
-## Branch: fill the report — at milestone end
+## Branch: fill — at milestone end
 
-Runs after the `/logging-issues` sweep, so the issue file is complete.
+Runs **after** the `/logging-issues` sweep, so the issue detail files and their IDs exist.
 
-1. Copy the sealed mock's skeleton and replace every placeholder with real evidence — the commands actually run and their output, real screenshots where the mock promised them.
-2. Write the **Deviations** section: every difference from the contract, or the explicit word "None" — absence must be provable, not forgotten.
-3. Link the milestone's issues file — `bypassed` and `open` entries often explain deviations.
-4. Write `docs/targets/<name>.report.md`. The final chat summary follows the report's layout.
+1. Fill this milestone's rows in `FINAL_REPORT.md`: replace every placeholder with real evidence — the commands actually run and their output, or the real UI walkthrough and screenshots the format promised.
+2. Each row states its verdict **and** the environment the evidence came from. A gate whose evidence is from the wrong environment is rendered as a non-closure, not a pass.
+3. **Never drop a cell.** Every gate appears; an N/A, fallback, or failing cell cites the `[M<N>-NN]` issue ID that explains it — a non-pass cell without a citation is incomplete.
+4. Write the **Deviations** section: every difference from the locked decisions, or the explicit word "None" — absence must be provable, not forgotten.
 
-The report is complete when every achievement in the contract has evidence or a Deviations entry, and no placeholder remains.
+The fill is complete when every locked gate has an evidence cell in its declared environment (or a cited non-closure), and no placeholder remains. The final chat summary follows the report's layout.
