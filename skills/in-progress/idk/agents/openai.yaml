@@ -1,0 +1,5 @@
+interface:
+  display_name: "IDK"
+  short_description: "Teaching detour for an unanswerable grill question"
+policy:
+  allow_implicit_invocation: false
