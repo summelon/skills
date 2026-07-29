@@ -1,10 +1,10 @@
-# Takeover guide skeleton
+# Learning-record skeleton
 
 Frontmatter — minimal and generic; no publishing metadata, tag sets, or confidence taxonomies:
 
 ```yaml
 ---
-type: idk-takeover
+type: idk-learning-record
 status: draft   # flip to `final` before returning
 topic: <bounded topic>
 context: <milestone or workstream>
@@ -27,3 +27,6 @@ Sections, in order. 1–6 and 11 are the stable core; the rest appear only when 
 11. **Self-check Questions** — a few explain/predict/apply questions for future review; no trivia.
 12. **Further Learning** — adjacent concepts named, not taught. A frontier, not an excuse to broaden the guide.
 13. **Sources** *(proportional)* — include when the session did external research, inspected project files, or made version-sensitive or disputed claims; omit citations for stable basics.
+
+Before closing the side conversation, make this record standalone, remove
+duplication, and flip `status: draft` to `status: final`.

@@ -1,59 +1,108 @@
 ---
 name: idk
-description: A teaching detour for when the user can't answer the current grilling question. Suspends the question, teaches the missing background interactively, saves a standalone guide under docs/idk/, and returns only a three-field decision card so the grill can resume.
+description: Teach one blocked grill question in a user-opened side conversation, save a standalone learning record, show a concise summary guide, and finish with a copy-ready decision card.
 disable-model-invocation: true
 argument-hint: "[question id or quoted question — omit to use the current one]"
 ---
 
 # idk
 
-The user is mid-grill (`/grill-me`, `/grill-with-doc`) and can't answer the current question — not because they haven't decided, but because they lack the background to decide. This skill is the detour: suspend that one question, teach what's missing, preserve the knowledge in a guide, and hand back only the user's decision state. The grill owns the interview, the recommendation, and the record of the final answer; this skill never does any of that.
+Run a teaching detour for one question the user cannot yet answer during
+`/grill-me` or `/grill-with-doc`. Build enough understanding to return to the
+question, preserve the lesson in one learning record, and finish with a minimal
+decision card.
 
-One invocation, one question, one guide file. `/btw` handles one-shot clarifications; this skill is for when understanding takes a conversation.
+One invocation owns one question and one record. Use `/btw` alone for a
+one-shot clarification; use `idk` when understanding needs a conversation.
 
-## Target question
+## Require a user-opened side conversation
 
-Resolve the teaching target in this order:
+The user creates the context boundary by combining a host-supported switching
+command with this skill. For example, Codex may use:
 
-1. An explicit argument (`/idk D04`, `/idk "why a lease instead of a DB lock?"`).
-2. The active unresolved grill question.
-3. The immediately preceding question you asked.
+```text
+/btw $idk
+/btw $idk D04
+/btw $idk "Why would we choose a lease instead of a database lock?"
+```
 
-If genuinely ambiguous, ask one brief clarification before teaching. Never drift onto a different topic than the suspended question.
+With another host or switching mechanism, the user may replace `/btw` with
+`/fork`, `/branch`, or an equivalent. The switching command owns isolation and
+context inheritance.
 
-## Isolation
+If the current conversation is clearly the parent grill, stop before teaching
+or writing and ask the user to relaunch through a switching command. Do not
+launch a subagent, create a side context, resume the parent, or send results to
+it. After this skill closes, the user switches back and pastes the card.
 
-The teaching conversation must stay out of the parent grill's context wherever the host allows it. Use the host's native isolated-context mechanism if one supports an *interactive, multi-turn* session with the user.
+## Resolve the target
 
-Most hosts (Claude Code, Codex) run subagents headlessly — they cannot talk to the user — so a truly isolated interactive detour is not available. In that case do **not** pretend: say in one line that teaching will happen inline, then run the detour with strict discipline so the pollution is minimal:
+Resolve the suspended question in this order:
 
-- Delegate heavy research and guide drafting to a background subagent when available; only its conclusions enter the conversation.
-- Keep every teaching message concise (see below); the depth lives in the guide file, not the transcript.
-- Close by emitting the decision card and nothing else, and resume the grill from the card alone — do not re-litigate the lesson.
+1. An explicit argument such as `D04` or a quoted question.
+2. The active unresolved grill question inherited by this side conversation.
+3. The immediately preceding visible question.
 
-## Workflow
+Ask one brief clarification only when the target is genuinely ambiguous. Keep
+the original question suspended; teach no adjacent topic.
 
-1. **Capture the target.** Pin down the exact suspended question, why it matters, the candidate options, accepted constraints, and what the user says they're missing. Inspect relevant project code and docs; use web research only when local evidence is insufficient or the topic is version-sensitive.
-2. **Create the draft guide** early, under `docs/idk/` (project instructions or an explicit argument may override the directory). Naming and structure: see [the guide contract](#the-guide) below.
-3. **Teach concisely.** First message: what the question is really asking, the essential mental model, minimum prerequisites, a short comparison of the options, optionally a brief recommendation, and one quick understanding check. Plain English. The guide is the reference document — never paste it into the conversation as the lesson.
-4. **Handle follow-ups.** Answer directly. Each follow-up is signal: fold the useful clarification into the guide as a standalone section (Common confusion, Why this distinction matters, Worked example) — never as transcript.
-5. **Check understanding.** One short question that makes the user explain, predict, or apply — not recite. If they're confused, correct concisely, update the guide if the clarification has lasting value, and check again.
-6. **Confirm readiness.** Close only after the check passes **and** the user says they're ready to return. They do not have to pick an option — `decision: undecided` is a valid, normal outcome. Understanding and deciding are separate.
-7. **Finalise the guide**: fold in follow-up clarifications, deduplicate, verify it stands alone without this conversation, flip frontmatter `status: draft` → `final`.
-8. **Show the short guide** — one message with the critical takeaways and the file path, nothing else. This is the terminal-sized version of what you just wrote; the full file is for later reading, so don't print it.
-9. **Return the decision card** in a message of its own — only the fenced YAML block, no preamble, no sign-off. It is the one thing that crosses back into the parent, and the user is the one who carries it, so it has to be clean to select and paste in a single gesture. Then resume the suspended grill question.
+## Teach
 
-## The guide
+1. **Capture the gap.** Pin down the question, why it matters, candidate
+   options, accepted constraints, and the background the user lacks. Inspect
+   relevant project code and docs. Research externally only when local evidence
+   is insufficient or the topic is version-sensitive. Finish with a bounded
+   teaching target.
+2. **Start the record.** Create a draft Markdown file under `docs/idk/`
+   unless project instructions or an explicit argument override the directory.
+   Read the learning-record skeleton, choose a collision-safe meaningful name,
+   and write the original question, scope, and known project constraints with
+   `status: draft`. Verify the file exists before sending the first lesson.
+3. **Teach concisely.** Explain what the question is asking, the essential
+   mental model, minimum prerequisites, and a short option comparison. Give a
+   brief tutor recommendation only when useful. End with one explain, predict,
+   or apply check.
+4. **Use follow-ups as signal.** Answer directly. Rewrite durable
+   clarifications into the record as standalone sections such as Common
+   confusion, Why this distinction matters, or Worked example. Keep transcript
+   out of the file.
+5. **Verify understanding.** Correct confusion concisely and check again.
+   Finish only when the user demonstrates understanding.
+6. **Confirm readiness.** Ask whether the user is ready to return. A choice is
+   optional; `decision: undecided` is a normal outcome.
 
-One comprehensive standalone Markdown file: complete in coverage, compressed in presentation, readable without this session. Neutral — even if you gave a verbal recommendation while teaching, the guide never endorses an option. Critical takeaways go **first**; a reader who stops after the opening sections keeps the essentials. Follow the section skeleton in [assets/takeover-guide-template.md](assets/takeover-guide-template.md).
+## Close with three artifacts
 
-Name it `<milestone-or-area>--<topic>.md`, e.g. `m7--onnx-attention-cuda-placement.md`, `api-design--optimistic-vs-pessimistic-locking.md`. Never generic names (`idk-001.md`, `teaching-note.md`). If the name exists, append `-2` — never overwrite a previous invocation's file.
+Complete these in order. The detour remains open until all three exist.
 
-**Write boundary:** this one `.md` file is the only thing the skill may create or modify — including the decision card, which is a message and never a file. Giving the card a filename breaks either way: a fixed name silently overwrites the previous invocation's card, and a per-invocation name forces you to hand the parent a path, which the return contract forbids. No code, tests, config, ADRs, READMEs, indexes, other guides, images, or scripts. Diagrams are inline Mermaid/ASCII. Code excerpts are short, sourced (`from src/jobs/worker.py, claim_job()`), or clearly labelled `Illustrative pseudocode:`. This skill teaches; it does not implement.
+1. **Learning record.** Fold in durable follow-up clarifications, deduplicate,
+   verify the file stands alone, change `status: draft` to `status: final`, and
+   reread the saved file to confirm it is final.
+2. **Summary guide.** Send one concise message with the critical takeaways and
+   the record path. Keep the complete record on disk.
+3. **Decision card.** Send one final message containing only the fenced YAML
+   block defined below. Stop after it; the user carries it back manually.
 
-## The decision card
+## Learning-record contract
 
-The last thing `/idk` emits, alone in its own message. Exactly three fields — nothing more:
+Write one comprehensive standalone guide: complete in coverage, compressed in
+presentation, and readable without this conversation. Keep it neutral even if
+the side-chat teaching included a recommendation. Put critical takeaways first
+and follow [the learning-record
+skeleton](assets/learning-record-template.md).
+
+Name it `<milestone-or-area>--<topic>.md`, such as
+`api-design--optimistic-vs-pessimistic-locking.md`. Use `-2`, `-3`, and so on
+when a filename exists; each invocation creates a new record.
+
+The current record is the only file this skill may create or modify. Keep
+diagrams inline. Keep project excerpts short and sourced; label invented
+examples `Illustrative pseudocode:`. Teach without changing code, tests,
+configuration, ADRs, READMEs, indexes, existing docs, or other records.
+
+## Decision-card contract
+
+Emit exactly three fields:
 
 ```yaml
 question: >
@@ -66,8 +115,12 @@ uncertainty:
 decision: decomposed primitive operators
 ```
 
-- `question` — the original grill question, preserved, not broadened.
-- `uncertainty` — only unresolved points that could change the answer; `none` if none remain.
-- `decision` — the **user's** current answer, or `undecided`. Never substitute your recommendation.
+- `question`: preserve the original grill question.
+- `uncertainty`: include only unresolved points that could change the answer,
+  or `none`.
+- `decision`: record the user's answer, or `undecided`.
 
-No guide path, no lesson recap, no option summary, no recommendation, no sources, no suggested next question. The parent grill is not told to read the guide. Returning the card implies the understanding check and readiness confirmation already happened.
+The card contains no guide path, recap, comparison, tutor recommendation,
+sources, readiness flag, or next question. Emitting it implies that the
+learning record, summary guide, understanding check, and readiness confirmation
+are complete.

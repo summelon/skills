@@ -1,5 +1,5 @@
 interface:
   display_name: "IDK"
-  short_description: "Teaching detour for an unanswerable grill question"
+  short_description: "Teach a blocked grill question in a side conversation"
 policy:
   allow_implicit_invocation: false
