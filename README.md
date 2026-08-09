@@ -24,3 +24,21 @@ scripts/link-skills.sh
 
 - **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Log nontrivial issues into `docs/issues/` as they're solved: attempts tried, root cause, repro, cost, pinned environment. Progressive-disclosure index plus per-milestone detail files with stable IDs; sweeps at milestone end; recalls past entries when a new error looks familiar.
 - **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Lock a milestone's targets and gates and confirm the cumulative final report's layout before implementation; fill the report with real evidence — in its declared verification environment, citing issue IDs — at milestone end.
+
+### Agent of Empires (project-scoped)
+
+A suite for taking an [Agent of Empires](https://github.com/agent-of-empires/agent-of-empires) change from planning through merge-ready review — see [skills/aoe](./skills/aoe/README.md). Not linked globally; install per checkout/worktree:
+
+```bash
+scripts/install-aoe.sh /path/to/agent-of-empires
+```
+
+#### Model-invoked
+
+- **[aoe-contribute](./skills/aoe/aoe-contribute/SKILL.md)** — Thin orchestrator: start → implement → review → verify → PR, stopping before any remote action.
+- **[aoe-start](./skills/aoe/aoe-start/SKILL.md)** — Read-only preparation: repo rules, existing code, affected surfaces, owed gates, condensed into a plan.
+- **[aoe-implement](./skills/aoe/aoe-implement/SKILL.md)** — Smallest coherent diff with accessibility and behavior tests built in.
+- **[aoe-review](./skills/aoe/aoe-review/SKILL.md)** — Maintainer-style full-diff review; findings ranked blocking / cleanup / optional / not applicable.
+- **[aoe-verify](./skills/aoe/aoe-verify/SKILL.md)** — Mechanical merge gates, each derived from current repo instructions and reported independently.
+- **[aoe-pr](./skills/aoe/aoe-pr/SKILL.md)** — Presentation audit and drafted reviewer replies; remote actions only on explicit request.
+- **[aoe-review-feedback](./skills/aoe/aoe-review-feedback/SKILL.md)** — Classify new reviewer feedback against current code before applying anything.

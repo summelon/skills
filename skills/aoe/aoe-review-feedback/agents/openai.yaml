@@ -1,0 +1,3 @@
+interface:
+  display_name: "AoE Review Feedback"
+  short_description: "Classify reviewer items before applying any"

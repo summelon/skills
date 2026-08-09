@@ -1,0 +1,3 @@
+interface:
+  display_name: "AoE PR"
+  short_description: "Stage PR text and reviewer replies, no remote actions"
