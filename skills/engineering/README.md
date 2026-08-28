@@ -2,6 +2,10 @@
 
 Skills for daily code work.
 
+## User-invoked
+
+- **[swarm](./swarm/SKILL.md)** — Orchestrate parallel subagents to implement, merge, and report every open ticket under a parent issue. Supports foreground, background, and workflow-wave run modes.
+
 ## Model-invoked
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
