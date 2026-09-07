@@ -1,6 +1,6 @@
 ---
 name: logging-issues
-description: Log issues hit during development into the project's issue records (docs/issues/) — attempts tried, root cause, repro, cost, pinned environment. Use right after solving or bypassing a nontrivial issue, at milestone end to sweep the session for unlogged issues, or when a new error may have been seen before.
+description: Log issues hit during development into the project's issue records (docs/issues/) — attempts tried, root cause, repro, cost, pinned environment. Use right after solving or bypassing a nontrivial issue, at goal closure to sweep the session for unlogged issues, or when a new error may have been seen before.
 ---
 
 # Logging Issues
@@ -9,26 +9,25 @@ Development must not be a black box. Every nontrivial fight — what hit, what w
 
 ## Where records live
 
-Records use progressive disclosure under `docs/issues/`:
+For log or sweep, use the current goal's routing from `/tracking-goals`; run its identification step if no goal is established. The agent assigns the goal ID, not the user. Recall is read-only and needs no new goal.
 
-- `docs/issues/README.md` — the **index**: one line per issue, so a visiting agent reads the whole issue history without loading every body.
-- `docs/issues/<milestone_filename>.issues.md` — the **detail** file, one per milestone, mirroring the milestone doc's name (`docs/milestones/milestone_03_async_inference_jobs.md` → `docs/issues/milestone_03_async_inference_jobs.issues.md`). Non-milestone work uses `docs/issues/<topic>.issues.md`.
+- `docs/issues/README.md` remains the shared index: one line per issue, linking to its actual location, including collected records.
+- New goal detail files start at `docs/issues/<goal-id>.md`. Include the Goal ID and a relative link to the goal's plan.
+- Follow existing goal links when updating records. After collection, edit `docs/goals/<goal-id>/issues/<filename>.md` directly, including on resumption. New issue records for a collected goal belong there too.
 
-If the project has no `docs/` convention, ask the user once where records should live and write the answer into the project's `CLAUDE.md`.
+If the repository uses another documentation root, follow its established convention consistently.
 
 ### Issue IDs
 
-Every issue gets a stable ID: `[M<N>-NN]` for milestone work (`[M3-01]`), `[<topic>-NN]` otherwise. The ID is citation currency — milestone docs, reviews, and the final report all cite it. Never renumber a published ID.
+New issues use stable `[<goal-id>-NN]` IDs. Preserve published IDs in existing records; never renumber them on collection or resumption. Plans, targets, reviews, and closing records cite the ID with a link to its detail entry.
 
 ### Index line
 
-One line per issue in `docs/issues/README.md`:
-
 ```markdown
-- [M3-01] solved — chained worker forwarded non-ABI tensor names ([detail](milestone_03_async_inference_jobs.issues.md))
+- [2026-09-07-example-01] solved — concise symptom ([detail](2026-09-07-example.md#issue-anchor))
 ```
 
-The status word in the index makes open debts visible without opening any detail file.
+Use the actual heading anchor. The status makes open debts visible without opening each detail file. `/tracking-goals` repairs index links when collecting records; subsequent logging keeps them current.
 
 ## What earns an entry
 
@@ -53,7 +52,7 @@ The moment an issue meeting the threshold is solved or bypassed, append an entry
 Entry template (the single source of truth for the schema):
 
 ```markdown
-### [M<N>-NN] <short issue title>
+### [<goal-id>-NN] <short issue title>
 
 - **Date / Status:** YYYY-MM-DD — solved | bypassed | blocked | open
 - **Symptom:** observed behaviour; quote the decisive error line exactly
@@ -73,6 +72,8 @@ A `bypassed` status is a debt marker: the entry must say why the bypass was acce
 
 ### Environment lock
 
+The environment lock is shared and stays outside collected goal folders. Retain dated captures used by older results rather than replacing their pins; an issue cites the relevant capture and any deltas.
+
 The **Environment** field points at a project-level env-lock instead of repeating pins. If none exists when first needed, create `docs/issues/env.lock.md` (or the project's established location) capturing the pins **with the exact command that produced them**, so a future agent regenerates it rather than trusting a stale paste:
 
 ```markdown
@@ -88,24 +89,26 @@ Captured: YYYY-MM-DDTHH:MMZ
 
 ### Blocked issues
 
-A `blocked` entry hands the work off so it can be resumed: link `docs/handoffs/<date>-<slug>.md`. If no handoff exists, run the `/handoff` skill to write one, then link it — a blocked issue with no resume path is a dead end.
+A `blocked` entry links the goal's handoff. Reuse its existing location, or create `docs/handoffs/<goal-id>.md` (under the collected goal directory if already collected). Include the Goal ID, plan link, blocker, attempts and evidence, current state, and next action. Use `/handoff` when available to prepare this context; otherwise write the concise record directly. Link it from the goal records so collection can identify its ownership.
 
-## Branch: sweep — at milestone end
+## Branch: sweep — at goal closure
 
-When milestone work is declared done, sweep **before** `/aligning-targets` fills the final report (the report cites this file's IDs, so it must be complete first):
+When goal work is finalized or closed, sweep **before** `/aligning-targets` fills the final report (the report cites this file's IDs, so it must be complete first):
 
 1. Re-read the session and the detail file; backfill any issue that met the threshold but was never logged.
 2. Compact duplicates — one issue, one ID, one entry.
-3. Write or update the milestone's **Smooth** section: one line per gate that passed on the first attempt — cheap positive evidence that the gate ran clean, distinct from an unrecorded gap.
+3. Write or update the goal's **Smooth** section: one line per gate that passed on the first attempt — cheap positive evidence that the gate ran clean, distinct from an unrecorded gap.
 4. Re-sync `docs/issues/README.md`: one index line per issue, statuses current.
-5. List every entry still `bypassed`, `blocked`, or `open` to the user — these are the milestone's open debts.
+5. List every entry still `bypassed`, `blocked`, or `open` to the user — these are the goal's open debts.
 
 Detail-file header and Smooth section:
 
 ```markdown
-# Issues — <milestone or topic>
+# Issues — <goal title>
 
-Milestone: [<milestone name>](../milestones/<milestone_file>.md)
+Goal ID: `<goal-id>`
+
+Plan: [<goal title>](<relative path to the existing plan>)
 
 <≤3 lines: what this work fought, main open risk.>
 
@@ -114,4 +117,4 @@ Milestone: [<milestone name>](../milestones/<milestone_file>.md)
 - YYYY-MM-DD: <gate that passed on the first attempt>
 ```
 
-The sweep is complete when every issue meeting the threshold has exactly one entry, the index matches, and the Smooth section reflects the milestone's clean gates.
+The sweep is complete when every issue meeting the threshold has exactly one entry, the index matches, and the Smooth section reflects the goal's clean gates.

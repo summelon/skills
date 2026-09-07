@@ -1,45 +1,40 @@
 ---
 name: aligning-targets
-description: Lock a milestone's targets and gates before implementation, and confirm the layout of the cumulative final report so a long build can't diverge from the user's goals — in outcome or in how it's reported. Fill the report with real evidence at milestone end. Use when a plan or grilling session lands a milestone, when the user asks to lock targets or confirm the report's layout, or when milestone work is declared done.
+description: Align a working goal's targets, gates, and results layout before implementation; fill its individual target file with evidence when runs or experiments finish. Use when planning or grilling lands a goal, the user asks to lock targets, or work is ready for final evaluation.
 ---
 
 # Aligning Targets
 
-Long development diverges silently from the user's goals — in the outcome, and in how the outcome is reported. This skill kills both. Per milestone it fires at two points: at the **start** the user locks the targets and the format of the report rows this milestone will add; at the **end** those rows are filled with real evidence. The locked decisions are the contract.
+Each goal has its own target contract and results record. Confirm what counts as done and how results will be presented before implementation; preserve that agreement when filling measured evidence.
 
-Confirming the report's **format and layout** is the main event — a long build most often disappoints not by missing the target but by reporting it in a shape the user didn't want. Targets are usually already aligned by the grilling or planning session that landed the milestone; confirm them, then spend the iteration on the report.
+## Artifacts and routing
 
-## Artifacts
+Use the current goal's routing from `/tracking-goals`; run its identification step if no goal is established. Initialize `docs/targets/<goal-id>.md` for a new target contract and link it from the plan and current-goal router. Include the agent-assigned Goal ID and a link to the plan. Reuse the linked target file on later runs or resumption, including when it lives under `docs/goals/<goal-id>/targets/`.
 
-- **Targets** live **in the milestone file** — the skill sharpens its Goal / Scope / **Gates** in place. No separate targets artifact.
-- **The report** is one cumulative `docs/targets/FINAL_REPORT.md` for the whole effort. Each milestone confirms the format of the rows it adds, then appends them — the report grows into the full picture rather than fragmenting into a file per milestone.
+The target file owns both the agreed gates and the detailed final results for this goal. The plan links to that contract rather than maintaining a second gate definition. A small goal may keep gates in its plan unless this alignment workflow is needed. Shared historical reports remain references; new goals get individual target files.
 
 ## Gates
 
-A **gate** is a milestone target's pass condition. Each gate declares two things:
+Each gate declares a checkable **pass condition** and its **verification environment**: for example, a numeric threshold measured on a named GPU and pinned environment, or an observable UI behavior in a browser. Evidence from a fake runtime cannot close a real-GPU gate. Completing implementation tasks does not close an unverified gate.
 
-- **Pass condition** — checkable. A number or threshold is best (`IoU > 0.99`, `peak diff < 200 MiB`); a binary observable is fine (`clicking Segment renders a mask overlay, no console errors`). Prose is allowed when nothing measurable fits, but prefer the measurable form.
-- **Verification environment** — where the evidence must be produced: real GPU (which device, which pinned env) versus fake runtime or CPU. **Evidence from the wrong environment cannot close the gate** — fake-runtime output against a real-GPU gate is a non-closure, surfaced, never smoothed over. This is the most common silent divergence; the declaration is what prevents it.
+## Lock — before implementation
 
-## Branch: lock — at milestone start
+1. Gather the agreed outcome, scope, and gates from the conversation and plan. Initialize the goal's target file with these decisions and confirm any unsettled targets with the user; reuse explicit alignment already given.
+2. Draft the exact Results and Reproduction layout in that file. Use clearly marked example values or screenshot slots. Choose the shape that fits the work: measured tables, experiment comparisons, or a UI walkthrough. Include gate verdicts, evidence environments, and deviations.
+3. Present the concrete layout and revise until the user confirms it. Implementation must not start before the target and reporting agreement is locked; prior explicit confirmation counts. Leave the agreement distinguishable from the evidence that will fill it.
 
-1. **Lock targets.** Gather the milestone's targets from its spec and the conversation. Write each as a checkable gate (pass condition + verification environment) into the milestone file. Confirm with the user.
-2. **Confirm the report format.** Draft, in markdown, the exact rows/sections this milestone will add to `FINAL_REPORT.md` — the layout the final evidence will fill. Placeholder evidence only: `(example)` values, `[screenshot: mask overlay after Segment click]`. The shape fits the project: a numeric results table (overhead / memory / parity across dtype × runtime) **or** a UI verification walkthrough (a numbered click-path plus a screenshot slot). No prototypes, no code — the user wants the skeleton, not a demo.
-3. **Iterate until locked.** Present the format; revise until the user explicitly confirms. **Implementation must not start before the lock** — no "assumed approved".
+The lock is complete when the goal's target file contains the user-aligned contract and results layout, and its plan links resolve.
 
-## During implementation
+## During work
 
-A **gate-level** change — a gate becomes unreachable or changes meaning, its verification environment shifts, a locked scope line is about to be violated — stops the work: surface it and re-confirm with the user at that moment. Silent divergence is the failure this skill exists to kill.
+A gate becoming unreachable, a change in its meaning or verification environment, or a scope change requires renewed alignment before dependent work continues. Record the approved amendment and its reason without erasing the original agreement. Cosmetic output differences and minor findings go in Deviations without interrupting work.
 
-**Evidence-level** surprises — cosmetic output differences, minor extra findings — don't interrupt; they go to the report's Deviations section.
+## Fill — after runs or experiments finalize
 
-## Branch: fill — at milestone end
+Run after the `/logging-issues` sweep so issue records and stable IDs exist.
 
-Runs **after** the `/logging-issues` sweep, so the issue detail files and their IDs exist.
+1. Update the same target file with actual results, commands and outputs, or verified walkthroughs and screenshots. Preserve the agreed contract and identify the run/environment behind each measurement.
+2. Account for every gate with a verdict and evidence in its declared environment. Failed, blocked, fallback, or N/A results cite the issue record explaining the non-closure; evidence from the wrong environment is not a pass.
+3. Record every deviation from the agreement, or explicitly state “None”. Replace all result placeholders with evidence or an explained non-closure. Superseded or abandoned work records partial results rather than pretending the gates passed.
 
-1. Fill this milestone's rows in `FINAL_REPORT.md`: replace every placeholder with real evidence — the commands actually run and their output, or the real UI walkthrough and screenshots the format promised.
-2. Each row states its verdict **and** the environment the evidence came from. A gate whose evidence is from the wrong environment is rendered as a non-closure, not a pass.
-3. **Never drop a cell.** Every gate appears; an N/A, fallback, or failing cell cites the `[M<N>-NN]` issue ID that explains it — a non-pass cell without a citation is incomplete.
-4. Write the **Deviations** section: every difference from the locked decisions, or the explicit word "None" — absence must be provable, not forgotten.
-
-The fill is complete when every locked gate has an evidence cell in its declared environment (or a cited non-closure), and no placeholder remains. The final chat summary follows the report's layout.
+The fill is complete when every gate is accounted for and no result placeholder remains. Filling a report with non-closures does not complete the goal. `/tracking-goals` owns lifecycle decisions, collection, and the closing README's concise Result and Reproduction summary; this skill keeps detailed evidence in the target file. The final chat summary follows the agreed reporting layout.

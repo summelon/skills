@@ -26,8 +26,9 @@ scripts/link-skills.sh
 
 #### Model-invoked
 
-- **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Log nontrivial issues into `docs/issues/` as they're solved: attempts tried, root cause, repro, cost, pinned environment. Progressive-disclosure index plus per-milestone detail files with stable IDs; sweeps at milestone end; recalls past entries when a new error looks familiar.
-- **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Lock a milestone's targets and gates and confirm the cumulative final report's layout before implementation; fill the report with real evidence — in its declared verification environment, citing issue IDs — at milestone end.
+- **[tracking-goals](./skills/engineering/tracking-goals/SKILL.md)** — Identify and track working goals, route their records, and collect goal-owned documents at closure; resume collected records in place.
+- **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Record nontrivial issues per goal with stable IDs, reproduction steps, and a shared index; recall prior fixes and sweep at closure.
+- **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Align each goal’s targets, gates, and results layout in an individual target file, then fill it with measured evidence.
 
 ### Agent of Empires (project-scoped)
 
