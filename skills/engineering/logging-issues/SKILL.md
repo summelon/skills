@@ -68,7 +68,7 @@ Entry template (the single source of truth for the schema):
 - **Tags:** `env` | `dependency` | `api` | `data` | `perf` | ...
 ```
 
-A `bypassed` status is a debt marker: the entry must say why the bypass was accepted instead of a fix. A `blocked` status must link a handoff doc (see below).
+A `bypassed` status is a debt marker: the entry must say why the bypass was accepted instead of a fix. A `blocked` status carries its own next step; see below.
 
 ### Environment lock
 
@@ -89,7 +89,7 @@ Captured: YYYY-MM-DDTHH:MMZ
 
 ### Blocked issues
 
-A `blocked` entry links the goal's handoff. Reuse its existing location, or create `docs/handoffs/<goal-id>.md` (under the collected goal directory if already collected). Include the Goal ID, plan link, blocker, attempts and evidence, current state, and next action. Use `/handoff` when available to prepare this context; otherwise write the concise record directly. Link it from the goal records so collection can identify its ownership.
+A `blocked` entry carries the blocker itself: attempts and evidence in **Tried**, the condition that would clear it in **Next step**. The goal's plan carries the resume path. Write a separate handoff at `docs/handoffs/<goal-id>.md` only when a different agent picks the work up; `/tracking-goals` owns that record's layout and its ownership at collection.
 
 ## Branch: sweep — at goal closure
 
