@@ -1,6 +1,6 @@
 ---
 name: tracking-goals
-description: Track the current working goal when starting repository changes, preparing a commit, switching or resuming goals, handing work to another agent or worktree, or closing work and collecting its records.
+description: Track the current working goal when starting repository changes, preparing a commit, switching or resuming goals, handing work to another agent or worktree, adopting a temporary Markdown file left at the repository root, or closing work and collecting its records.
 ---
 
 # Tracking Goals
@@ -33,6 +33,14 @@ New goals initially use category folders:
 Create optional records only when needed. Assign their Goal ID and link them from the goal's records; a handoff whose context has been taken up drops off the router but stays linked from the plan; the user supplies the outcome, not bookkeeping identifiers. Other goal-owned design or recording documents follow the same ownership rule. Shared indexes, environment locks, and durable references remain shared.
 
 Existing links are authoritative for location. Once a goal has been collected, update its records directly under `docs/goals/<goal-id>/`, including on resumption; create additional goal-owned records under the appropriate category there. Do not move records back or create competing copies in the development folders.
+
+## Adopt stray notes
+
+Untracked Markdown at the repository root is a temporary file, usually another agent's broad summary or search dump left there before or during a working session. Look for it at the commit checkpoint and during closure, and act whenever the user points one out.
+
+Adopt by extraction, not by copying. Read the file critically: most of it restates the codebase, generalizes, or speculates. Verify what is cheap to verify against the repository, and keep only decisions, measurements, and facts that cost effort to establish; retain an unverified claim as unverified, with its source. Route the surviving content by the ownership rules above, preferring a merge into the current goal's existing records over a new file — issues through `/logging-issues`, measurements through `/aligning-targets`, decisions and task state into the plan. Create a goal-owned record only when substantial content fits none of them. Content the goal does not own belongs in its shared location and stays there. With no current goal, the commit checkpoint governs: establish one, or leave the file alone and say so.
+
+Write the record first, then remove the original with `rm`. Removing an untracked file leaves no Git trace, so the receiving record names the file it came from and that the source was agent output. Confirm removal with the user, unless its content has already been worked through with them in this session — a grilling session that reached shared understanding is that approval. When nothing survives extraction, say so and remove the file rather than manufacturing a record.
 
 ## Lifecycle
 
