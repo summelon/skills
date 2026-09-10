@@ -20,6 +20,8 @@ STATE_FILE="$CODEX_HOME/prime-windows-state.json"
 LOCK_FILE="$CODEX_HOME/prime-windows.lock"
 
 MAX_DISCOVERY_FAILURES=3
+# Slack when deciding a window is real rather than a "starts now" placeholder.
+WINDOW_START_TOLERANCE=60
 PING_PROMPT='Reply with exactly: ok'
 PING_TIMEOUT=180
 DISCOVERY_TIMEOUT=300
@@ -214,14 +216,32 @@ original_active_email() {
   ' "$REGISTRY"
 }
 
-# email <TAB> resets_at <TAB> remaining_percent, one line per account
+# email <TAB> resets_at <TAB> remaining_percent <TAB> live(0|1), one line per account
+#
+# `resets_at` alone cannot tell you whether a window is running. For an account that
+# has spent nothing, the backend answers "if you started now, you would reset in 5h",
+# so resets_at slides forward on every poll and is always in the future - every account
+# would look live and nothing would ever be primed.
+#
+# The window's start time is the invariant: resets_at - window_minutes. For a placeholder
+# it equals the instant usage was polled; for a real window it sits however long the
+# window has been running in the past. Compare against the poll timestamp rather than
+# `now`, so stale registry data cannot masquerade as an aged window.
 account_rows() {
   # Sorted by email so the index column matches `codex-auth list` row for row.
-  jq -r '
+  jq -r --argjson now "$NOW" --argjson tol "$WINDOW_START_TOLERANCE" '
     (.accounts // []) | sort_by(.email) | .[]
+    | (.last_usage.primary // {}) as $p
+    | (($p.window_minutes // 300) * 60) as $window
+    | ($p.resets_at // 0) as $resets
+    | ($p.used_percent // 0) as $used
+    | (if (.last_usage_at // 0) > 0 then .last_usage_at else $now end) as $polled
+    | ($resets - $window) as $start
+    | (($used > 0) or ($resets > 0 and ($polled - $start) > $tol)) as $live
     | [ .email,
-        ((.last_usage.primary.resets_at // 0) | tostring),
-        ((100 - (.last_usage.primary.used_percent // 0)) | tostring)
+        ($resets | tostring),
+        ((100 - $used) | tostring),
+        (if $live then "1" else "0" end)
       ]
     | @tsv
   ' "$REGISTRY"
@@ -239,9 +259,9 @@ table_header() {
 }
 
 row_prefix() {
-  # $1 index, $2 marker, $3 email, $4 remaining percent, $5 resets_at
+  # $1 index, $2 marker, $3 email, $4 remaining percent, $5 resets_at, $6 live flag
   local resets='-'
-  [ "${5:-0}" -gt "$NOW" ] && resets="$(date -d "@$5" +%H:%M)"
+  [ "${6:-0}" -eq 1 ] && [ "${5:-0}" -gt 0 ] && resets="$(date -d "@$5" +%H:%M)"
   printf '%s %02d %-*s  %6s%%  %6s  ' "$2" "$1" "$EMAIL_W" "$3" "$4" "$resets"
 }
 
@@ -276,8 +296,8 @@ mapfile -t ROWS < <(account_rows)
 
 TARGET_COUNT=0
 for row in "${ROWS[@]}"; do
-  IFS=$'\t' read -r _email resets_at _remaining <<<"$row"
-  [ "${resets_at:-0}" -gt "$NOW" ] || TARGET_COUNT=$((TARGET_COUNT + 1))
+  IFS=$'\t' read -r _email _resets_at _remaining live <<<"$row"
+  [ "${live:-0}" -eq 1 ] || TARGET_COUNT=$((TARGET_COUNT + 1))
   [ "${#_email}" -gt "$EMAIL_W" ] && EMAIL_W="${#_email}"
 done
 
@@ -298,34 +318,34 @@ skipped=0
 aborted=0
 idx=0
 for row in "${ROWS[@]}"; do
-  IFS=$'\t' read -r email resets_at remaining <<<"$row"
+  IFS=$'\t' read -r email resets_at remaining live <<<"$row"
   [ -n "$email" ] || continue
   idx=$((idx + 1))
 
   marker=' '
   [ "$email" = "$ORIGINAL_ACCOUNT" ] && marker='*'
 
-  if [ "${resets_at:-0}" -gt "$NOW" ]; then
-    row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at"
+  if [ "${live:-0}" -eq 1 ]; then
+    row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at" "$live"
     echo "skip (live window)"
     skipped=$((skipped + 1))
     continue
   fi
 
   if [ "$aborted" -eq 1 ]; then
-    row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at"
+    row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at" "$live"
     echo "not attempted"
     continue
   fi
 
   if [ "$DRY_RUN" -eq 1 ]; then
-    row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at"
+    row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at" "$live"
     echo "would prime"
     continue
   fi
 
   # Prefix first, result after the call, so the table stays aligned while showing progress.
-  row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at"
+  row_prefix "$idx" "$marker" "$email" "$remaining" "$resets_at" "$live"
 
   if ! codex-auth switch "$email" </dev/null >/dev/null 2>&1; then
     echo "FAILED (switch)"
