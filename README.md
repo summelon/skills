@@ -16,6 +16,12 @@ Or for local development, symlink every skill into the harness skill directories
 scripts/link-skills.sh
 ```
 
+## Scripts
+
+- **[scripts/link-skills.sh](./scripts/link-skills.sh)** — symlink every promoted skill into `~/.claude/skills` and `~/.agents/skills`.
+- **[scripts/install-aoe.sh](./scripts/install-aoe.sh)** — install the project-scoped `aoe/` suite into one Agent of Empires checkout or worktree.
+- **[scripts/prime-codex-windows.sh](./scripts/prime-codex-windows.sh)** — start the 5h rate-limit window of every `codex-auth` account that has no live window, so idle quota rolls over instead of sitting still. Skips accounts already inside a window, restores the originally active account, and serialises itself behind a lock (only one account can be active per machine). Reports one aligned row per account — index, active marker, remaining 5h quota, reset time — matching `codex-auth list`. `--dry-run` reports the plan without spending anything. The ping model is discovered once by asking Codex for the cheapest available slug and pinned in `$CODEX_HOME/prime-windows-state.json`; it is rediscovered when that slug leaves the model cache or a call rejects it, and the script gives up after 3 failed discoveries rather than falling back to your configured (expensive) default.
+
 ## Skills
 
 ### Engineering
