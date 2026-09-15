@@ -50,7 +50,8 @@ Usage: prime-windows.sh [--dry-run] [--only codex|claude] [-h|--help]
 
   --dry-run      Report which accounts would be primed and which model would be used,
                  without switching accounts or spending anything. Both providers are
-                 still probed (read-only) so every row reports truthfully.
+                 still probed (read-only) so every row reports truthfully. Rows also
+                 carry the weekly window, which is reported but never primed.
   --only <who>   Prime only one provider: "codex" or "claude". Default: both.
 
 State:
@@ -260,7 +261,9 @@ original_active_email() {
   ' "$REGISTRY"
 }
 
-# email <TAB> resets_at <TAB> remaining_percent <TAB> live(0|1), one line per account
+# email <TAB> resets_at <TAB> remaining_percent <TAB> live(0|1) <TAB> week_remaining_percent
+# <TAB> week_resets_at, one line per account. The weekly window is reported only - it is
+# never primed - so its resets_at is emitted as 0 unless the same liveness test passes.
 #
 # `resets_at` alone cannot tell you whether a window is running. For an account that
 # has spent nothing, the backend answers "if you started now, you would reset in 5h",
@@ -281,16 +284,24 @@ account_rows() {
   jq -r --argjson now "$NOW" --argjson tol "$WINDOW_START_TOLERANCE" '
     (.accounts // []) | sort_by(.email) | .[]
     | (.last_usage.primary // {}) as $p
+    | (.last_usage.secondary // {}) as $s
     | (($p.window_minutes // 300) * 60) as $window
+    | (($s.window_minutes // 10080) * 60) as $sweek
     | ($p.resets_at // 0) as $resets
+    | ($s.resets_at // 0) as $sresets
     | ($p.used_percent // 0) as $used
+    | ($s.used_percent // 0) as $sused
     | (if (.last_usage_at // 0) > 0 then .last_usage_at else $now end) as $polled
     | ($resets - $window) as $start
+    | ($sresets - $sweek) as $sstart
     | (($resets > $now) and (($used > 0) or (($polled - $start) > $tol))) as $live
+    | (($sresets > $now) and (($sused > 0) or (($polled - $sstart) > $tol))) as $slive
     | [ .email,
         ($resets | tostring),
         ((100 - $used) | tostring),
-        (if $live then "1" else "0" end)
+        (if $live then "1" else "0" end),
+        ((100 - $sused) | tostring),
+        ((if $slive then $sresets else 0 end) | tostring)
       ]
     | @tsv
   ' "$REGISTRY"
@@ -302,37 +313,52 @@ CLAUDE_LOGGED_IN=1
 CLAUDE_STATE=unclear   # live | dead | unclear
 CLAUDE_USED=""
 CLAUDE_RESETS_AT=0
+CLAUDE_WEEK_USED=""
+CLAUDE_WEEK_RESETS_AT=0
+CLAUDE_WEEK=$((7 * 24 * 3600))
+
+parse_used_percent() {
+  # $1: a usage line. Echoes the "NN% used" percentage, or nothing.
+  printf '%s\n' "$1" | sed -n 's/.*[^0-9]\([0-9]\{1,3\}\)% used.*/\1/p'
+}
+
+parse_reset_epoch() {
+  # $1: a usage line, $2: the epoch the probe was taken at.
+  # Echoes the epoch of its "resets ..." timestamp, or nothing.
+  local ts zone epoch
+  ts="$(printf '%s\n' "$1" | sed -n 's/.*resets //p')"
+  [ -n "$ts" ] || return 0
+  # "Sep 15, 3pm (Asia/Singapore)" and "Sep 15 at 1:42pm (...)" both appear in the
+  # wild; `date -d` accepts neither the comma nor the "at".
+  zone="$(printf '%s\n' "$ts" | sed -n 's/.*(\([^)]*\)).*/\1/p')"
+  ts="$(printf '%s\n' "$ts" | sed 's/([^)]*)//g; s/,//g; s/ at / /g; s/^ *//; s/ *$//')"
+  if [ -n "$zone" ]; then
+    epoch="$(TZ="$zone" date -d "$ts" +%s 2>/dev/null || true)"
+  else
+    epoch="$(date -d "$ts" +%s 2>/dev/null || true)"
+  fi
+  # The line carries no year, so a window that resets just after New Year parses
+  # into the past. Only a year rollover can do that; retry with the next one.
+  if [ -n "$epoch" ] && [ "$epoch" -lt "$(($2 - 86400))" ]; then
+    if [ -n "$zone" ]; then
+      epoch="$(TZ="$zone" date -d "$ts $(($(date +%Y) + 1))" +%s 2>/dev/null || echo "$epoch")"
+    else
+      epoch="$(date -d "$ts $(($(date +%Y) + 1))" +%s 2>/dev/null || echo "$epoch")"
+    fi
+  fi
+  printf '%s\n' "$epoch"
+}
 
 parse_claude_window() {
   # $1: the "Current session:" line, $2: the epoch the probe was taken at.
   # Sets CLAUDE_USED, CLAUDE_RESETS_AT and CLAUDE_STATE.
-  local line="$1" probed="$2" ts zone epoch used
+  local line="$1" probed="$2" epoch used
 
-  used="$(printf '%s\n' "$line" | sed -n 's/.*[^0-9]\([0-9]\{1,3\}\)% used.*/\1/p')"
+  used="$(parse_used_percent "$line")"
   [ -n "$used" ] && CLAUDE_USED="$used"
 
-  ts="$(printf '%s\n' "$line" | sed -n 's/.*resets //p')"
-  if [ -n "$ts" ]; then
-    # "Sep 15, 3pm (Asia/Singapore)" and "Sep 15 at 1:42pm (...)" both appear in the
-    # wild; `date -d` accepts neither the comma nor the "at".
-    zone="$(printf '%s\n' "$ts" | sed -n 's/.*(\([^)]*\)).*/\1/p')"
-    ts="$(printf '%s\n' "$ts" | sed 's/([^)]*)//g; s/,//g; s/ at / /g; s/^ *//; s/ *$//')"
-    if [ -n "$zone" ]; then
-      epoch="$(TZ="$zone" date -d "$ts" +%s 2>/dev/null || true)"
-    else
-      epoch="$(date -d "$ts" +%s 2>/dev/null || true)"
-    fi
-    # The line carries no year, so a window that resets just after New Year parses
-    # into the past. Only a year rollover can do that; retry with the next one.
-    if [ -n "$epoch" ] && [ "$epoch" -lt "$((probed - 86400))" ]; then
-      if [ -n "$zone" ]; then
-        epoch="$(TZ="$zone" date -d "$ts $(($(date +%Y) + 1))" +%s 2>/dev/null || echo "$epoch")"
-      else
-        epoch="$(date -d "$ts $(($(date +%Y) + 1))" +%s 2>/dev/null || echo "$epoch")"
-      fi
-    fi
-    [ -n "$epoch" ] && CLAUDE_RESETS_AT="$epoch"
-  fi
+  epoch="$(parse_reset_epoch "$line" "$probed")"
+  [ -n "$epoch" ] && CLAUDE_RESETS_AT="$epoch"
 
   if [ -n "$CLAUDE_USED" ] && [ "$CLAUDE_USED" -gt 0 ]; then
     CLAUDE_STATE=live
@@ -353,10 +379,30 @@ parse_claude_window() {
   fi
 }
 
+parse_claude_week() {
+  # $1: the "Current week (all models):" line, $2: the probe epoch.
+  # Reported only, never primed - so this sets no state, and clears the reset time
+  # when the line is the same "if you started now" placeholder the 5h line can be.
+  local line="$1" probed="$2" epoch used
+
+  used="$(parse_used_percent "$line")"
+  [ -n "$used" ] && CLAUDE_WEEK_USED="$used"
+
+  epoch="$(parse_reset_epoch "$line" "$probed")"
+  [ -n "$epoch" ] && CLAUDE_WEEK_RESETS_AT="$epoch"
+
+  if [ "$CLAUDE_WEEK_RESETS_AT" -le "$probed" ]; then
+    CLAUDE_WEEK_RESETS_AT=0
+  elif [ -z "$CLAUDE_WEEK_USED" ] || [ "$CLAUDE_WEEK_USED" -eq 0 ]; then
+    [ "$((CLAUDE_WEEK_RESETS_AT - probed))" -gt "$((CLAUDE_WEEK - WINDOW_START_TOLERANCE))" ] && \
+      CLAUDE_WEEK_RESETS_AT=0
+  fi
+}
+
 probe_claude() {
   # Identity first: `claude auth status` is JSON and costs nothing, and a logged-out
   # account is worth reporting rather than pinging.
-  local status line probed
+  local status report line probed
   status="$(timeout "$CLAUDE_STATUS_TIMEOUT" claude auth status </dev/null 2>/dev/null || true)"
   if [ -n "$status" ]; then
     CLAUDE_EMAIL="$(printf '%s' "$status" | jq -r '.email // empty' 2>/dev/null || true)"
@@ -370,9 +416,16 @@ probe_claude() {
   # Nothing on disk records the 5h window; /usage is the only thing that reports it.
   # It is a slash command, so this is a lightweight request, not a model completion.
   probed="$(date +%s)"
-  line="$(timeout "$CLAUDE_USAGE_TIMEOUT" claude -p \
+  report="$(timeout "$CLAUDE_USAGE_TIMEOUT" claude -p \
     --safe-mode --strict-mcp-config --tools "" --no-session-persistence \
-    "/usage" </dev/null 2>/dev/null | grep -m1 '^Current session:' || true)"
+    "/usage" </dev/null 2>/dev/null || true)"
+
+  # The weekly line is reported, not acted on, so parse it first and independently:
+  # a missing 5h line must not cost us the weekly figure.
+  line="$(printf '%s\n' "$report" | grep -m1 '^Current week' || true)"
+  [ -n "$line" ] && parse_claude_week "$line" "$probed"
+
+  line="$(printf '%s\n' "$report" | grep -m1 '^Current session:' || true)"
   [ -n "$line" ] || return 0
   parse_claude_window "$line" "$probed"
 }
@@ -380,17 +433,38 @@ probe_claude() {
 # ---------------------------------------------------------------- table rendering
 # Column layout mirrors `codex-auth list`: a 5-char marker/index gutter, then a
 # left-aligned account column sized to the widest email, then fixed-width stats.
+#
+# The weekly columns appear only under --dry-run. That is the reporting mode - nothing
+# is spent, so the whole point of the run is what the quotas look like - whereas a real
+# run is an action log, and the weekly window is never one of the things being acted on.
 EMAIL_W=7          # len("ACCOUNT")
 ACTION_W=22        # len("primed (probe unclear)")
+WEEK_W=9           # len("WEEK LEFT")
+WEEK_RESETS_W=11   # len("WEEK RESETS")
 
 table_header() {
-  printf '     %-*s  %7s  %6s  %s\n' "$EMAIL_W" "ACCOUNT" "5H LEFT" "RESETS" "ACTION"
-  printf '%*s\n' "$((5 + EMAIL_W + 2 + 7 + 2 + 6 + 2 + ACTION_W))" '' | tr ' ' '-'
+  printf '     %-*s  %7s  %6s  ' "$EMAIL_W" "ACCOUNT" "5H LEFT" "RESETS"
+  [ "$DRY_RUN" -eq 1 ] && printf '%*s  %*s  ' "$WEEK_W" "WEEK LEFT" "$WEEK_RESETS_W" "WEEK RESETS"
+  printf '%s\n' "ACTION"
+
+  local width=$((5 + EMAIL_W + 2 + 7 + 2 + 6 + 2 + ACTION_W))
+  [ "$DRY_RUN" -eq 1 ] && width=$((width + WEEK_W + 2 + WEEK_RESETS_W + 2))
+  printf '%*s\n' "$width" '' | tr ' ' '-'
 }
 
 row_prefix() {
-  # $1 index, $2 marker, $3 email, $4 remaining display, $5 resets display
+  # $1 index, $2 marker, $3 email, $4 remaining display, $5 resets display,
+  # $6 weekly remaining display, $7 weekly resets display (both dry-run only)
   printf '%s %02d %-*s  %7s  %6s  ' "$2" "$1" "$EMAIL_W" "$3" "$4" "$5"
+  [ "$DRY_RUN" -eq 1 ] && printf '%*s  %*s  ' "$WEEK_W" "${6:--}" "$WEEK_RESETS_W" "${7:--}"
+  return 0
+}
+
+week_resets_display() {
+  # $1: epoch, or 0 when there is no live weekly window. A weekly reset can be days
+  # out, so unlike the 5h column it needs a date to mean anything.
+  [ "${1:-0}" -gt 0 ] || { printf '%s\n' '-'; return 0; }
+  date -d "@$1" +'%m%d %H:%M'
 }
 
 # ---------------------------------------------------------------- run
@@ -439,7 +513,7 @@ if [ "$DO_CODEX" -eq 1 ]; then
   [ "${#ROWS[@]}" -gt 0 ] || die "no accounts in $REGISTRY"
 
   for row in "${ROWS[@]}"; do
-    IFS=$'\t' read -r _email _resets_at _remaining live <<<"$row"
+    IFS=$'\t' read -r _email _resets_at _remaining live _week_remaining _week_resets <<<"$row"
     [ "${live:-0}" -eq 1 ] || CODEX_TARGETS=$((CODEX_TARGETS + 1))
     [ "${#_email}" -gt "$EMAIL_W" ] && EMAIL_W="${#_email}"
   done
@@ -470,10 +544,13 @@ if [ "$DO_CLAUDE" -eq 1 ]; then
   echo "claude"
   claude_remaining='-'
   claude_resets='-'
+  claude_week_remaining='-'
   [ -n "$CLAUDE_USED" ] && claude_remaining="$((100 - CLAUDE_USED))%"
+  [ -n "$CLAUDE_WEEK_USED" ] && claude_week_remaining="$((100 - CLAUDE_WEEK_USED))%"
   [ "$CLAUDE_STATE" = live ] && [ "$CLAUDE_RESETS_AT" -gt 0 ] && \
     claude_resets="$(date -d "@$CLAUDE_RESETS_AT" +%H:%M)"
-  row_prefix 1 '*' "$CLAUDE_EMAIL" "$claude_remaining" "$claude_resets"
+  row_prefix 1 '*' "$CLAUDE_EMAIL" "$claude_remaining" "$claude_resets" \
+    "$claude_week_remaining" "$(week_resets_display "$CLAUDE_WEEK_RESETS_AT")"
 
   if [ "$CLAUDE_LOGGED_IN" -eq 0 ]; then
     echo "FAILED (not logged in)"
@@ -512,7 +589,7 @@ if [ "$DO_CODEX" -eq 1 ]; then
   echo "codex"
   idx=0
   for row in "${ROWS[@]}"; do
-    IFS=$'\t' read -r email resets_at remaining live <<<"$row"
+    IFS=$'\t' read -r email resets_at remaining live week_remaining week_resets <<<"$row"
     [ -n "$email" ] || continue
     idx=$((idx + 1))
 
@@ -521,28 +598,31 @@ if [ "$DO_CODEX" -eq 1 ]; then
 
     resets_disp='-'
     [ "${live:-0}" -eq 1 ] && [ "${resets_at:-0}" -gt 0 ] && resets_disp="$(date -d "@$resets_at" +%H:%M)"
+    week_disp="${week_remaining:-}%"
+    [ -n "${week_remaining:-}" ] || week_disp='-'
+    week_resets_disp="$(week_resets_display "${week_resets:-0}")"
 
     if [ "${live:-0}" -eq 1 ]; then
-      row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp"
+      row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp" "$week_disp" "$week_resets_disp"
       echo "skip (live window)"
       skipped=$((skipped + 1))
       continue
     fi
 
     if [ "$aborted" -eq 1 ]; then
-      row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp"
+      row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp" "$week_disp" "$week_resets_disp"
       echo "not attempted"
       continue
     fi
 
     if [ "$DRY_RUN" -eq 1 ]; then
-      row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp"
+      row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp" "$week_disp" "$week_resets_disp"
       echo "would prime"
       continue
     fi
 
     # Prefix first, result after the call, so the table stays aligned while showing progress.
-    row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp"
+    row_prefix "$idx" "$marker" "$email" "${remaining}%" "$resets_disp" "$week_disp" "$week_resets_disp"
 
     if ! codex-auth switch "$email" </dev/null >/dev/null 2>&1; then
       echo "FAILED (switch)"
