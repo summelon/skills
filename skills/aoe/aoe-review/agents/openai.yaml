@@ -1,3 +1,0 @@
-interface:
-  display_name: "AoE Review"
-  short_description: "Maintainer-style full-diff review, findings by severity"

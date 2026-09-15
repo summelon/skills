@@ -19,7 +19,6 @@ scripts/link-skills.sh
 ## Scripts
 
 - **[scripts/link-skills.sh](./scripts/link-skills.sh)** — symlink every promoted skill into `~/.claude/skills` and `~/.agents/skills`.
-- **[scripts/install-aoe.sh](./scripts/install-aoe.sh)** — install the project-scoped `aoe/` suite into one Agent of Empires checkout or worktree.
 - **[scripts/prime-windows.sh](./scripts/prime-windows.sh)** — start the 5h rate-limit window of every Codex and Claude account that has no live window, so idle quota rolls over instead of sitting still. Skips accounts already inside a window and reports one aligned row per account — index, active marker, remaining 5h quota, reset time — grouped by provider. `--dry-run` reports the plan without spending anything; `--only codex|claude` narrows the run. A single lock covers both halves.
   - **codex** — walks the `codex-auth` registry, switching between accounts and restoring the originally active one on exit (only one account can be active per machine). The ping model is discovered once by asking Codex for the cheapest available slug and pinned in `$CODEX_HOME/prime-windows-state.json`; it is rediscovered when that slug leaves the model cache or a call rejects it, and the script gives up after 3 failed discoveries rather than falling back to your configured (expensive) default.
   - **claude** — one OAuth account, no switching, so it runs first. Nothing on disk records the window, so liveness comes from parsing `claude -p /usage`, guarded against the "if you started now" placeholder reset time. An unreadable probe primes anyway and says so, since a wasted Haiku request costs less than an unprimed window. The ping is a hardcoded `haiku` call under `--safe-mode --tools ""`; never `--bare`, which would bypass the OAuth account being primed.
@@ -37,21 +36,3 @@ scripts/link-skills.sh
 - **[tracking-goals](./skills/engineering/tracking-goals/SKILL.md)** — Identify and track working goals, route their records, and collect goal-owned documents at closure; resume collected records in place.
 - **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Record nontrivial issues per goal with stable IDs, reproduction steps, and a shared index; recall prior fixes and sweep at closure.
 - **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Align each goal’s targets, gates, and results layout in an individual target file, then fill it with measured evidence.
-
-### Agent of Empires (project-scoped)
-
-A suite for taking an [Agent of Empires](https://github.com/agent-of-empires/agent-of-empires) change from planning through merge-ready review — see [skills/aoe](./skills/aoe/README.md). Not linked globally; install per checkout/worktree:
-
-```bash
-scripts/install-aoe.sh /path/to/agent-of-empires
-```
-
-#### Model-invoked
-
-- **[aoe-contribute](./skills/aoe/aoe-contribute/SKILL.md)** — Thin orchestrator: start → implement → review → verify → PR, stopping before any remote action.
-- **[aoe-start](./skills/aoe/aoe-start/SKILL.md)** — Read-only preparation: repo rules, existing code, affected surfaces, owed gates, condensed into a plan.
-- **[aoe-implement](./skills/aoe/aoe-implement/SKILL.md)** — Smallest coherent diff with accessibility and behavior tests built in.
-- **[aoe-review](./skills/aoe/aoe-review/SKILL.md)** — Maintainer-style full-diff review; findings ranked blocking / cleanup / optional / not applicable.
-- **[aoe-verify](./skills/aoe/aoe-verify/SKILL.md)** — Mechanical merge gates, each derived from current repo instructions and reported independently.
-- **[aoe-pr](./skills/aoe/aoe-pr/SKILL.md)** — Presentation audit and drafted reviewer replies; remote actions only on explicit request.
-- **[aoe-review-feedback](./skills/aoe/aoe-review-feedback/SKILL.md)** — Classify new reviewer feedback against current code before applying anything.
