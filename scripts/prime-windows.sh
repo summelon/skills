@@ -49,8 +49,8 @@ usage() {
 Usage: prime-windows.sh [--dry-run] [--only codex|claude] [-h|--help]
 
   --dry-run      Report which accounts would be primed and which model would be used,
-                 without switching accounts or spending anything. The claude window
-                 is still probed (read-only) so its row reports truthfully.
+                 without switching accounts or spending anything. Both providers are
+                 still probed (read-only) so every row reports truthfully.
   --only <who>   Prime only one provider: "codex" or "claude". Default: both.
 
 State:
@@ -271,6 +271,11 @@ original_active_email() {
 # it equals the instant usage was polled; for a real window it sits however long the
 # window has been running in the past. Compare against the poll timestamp rather than
 # `now`, so stale registry data cannot masquerade as an aged window.
+#
+# A window that has already reset is not live, whatever it was when it was polled, so
+# `resets_at` must still be in the future as well. Without that, registry data older
+# than one window reports an expired window as live - with a `RESETS` time in the past
+# and a remaining percentage the account no longer has - and the account is skipped.
 account_rows() {
   # Sorted by email so the index column matches `codex-auth list` row for row.
   jq -r --argjson now "$NOW" --argjson tol "$WINDOW_START_TOLERANCE" '
@@ -281,7 +286,7 @@ account_rows() {
     | ($p.used_percent // 0) as $used
     | (if (.last_usage_at // 0) > 0 then .last_usage_at else $now end) as $polled
     | ($resets - $window) as $start
-    | (($used > 0) or ($resets > 0 and ($polled - $start) > $tol)) as $live
+    | (($resets > $now) and (($used > 0) or (($polled - $start) > $tol))) as $live
     | [ .email,
         ($resets | tostring),
         ((100 - $used) | tostring),
@@ -421,7 +426,12 @@ fi
 ROWS=()
 CODEX_TARGETS=0
 if [ "$DO_CODEX" -eq 1 ]; then
-  [ "$DRY_RUN" -eq 1 ] || refresh_usage
+  # Always refresh, dry-run included: polling usage is a read-only API call that
+  # spends nothing and does not start a window. Skipping it would render the table
+  # from whatever the last real run left in the registry - percentages that have
+  # since moved, and windows that have since expired.
+  refresh_usage
+  NOW="$(date +%s)"
   ORIGINAL_ACCOUNT="$(original_active_email)"
   [ -n "$ORIGINAL_ACCOUNT" ] || echo "WARNING: no active account in registry; nothing to restore" >&2
 
