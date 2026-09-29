@@ -6,7 +6,8 @@ set -euo pipefail
 #   - ~/.claude/skills  — Claude Code
 #   - ~/.agents/skills  — Codex and other Agent Skills-compatible harnesses
 # Each entry is a symlink into this repo, so a `git pull` is all that's needed
-# to keep installed skills up to date.
+# to keep installed skills up to date; rerun after removing or renaming a skill
+# to prune its dangling link.
 #
 # Adapted from Matt Pocock's skills repo (MIT):
 # https://github.com/mattpocock/skills
@@ -51,5 +52,16 @@ for DEST in "${DESTS[@]}"; do
 
     ln -sfn "$src" "$target"
     echo "linked $name -> $src ($DEST)"
+  done
+
+  # Drop links left dangling by skills removed or renamed in this repo.
+  for link in "$DEST"/*; do
+    [ -L "$link" ] && [ ! -e "$link" ] || continue
+    case "$(readlink "$link")" in
+      "$REPO"/*)
+        rm "$link"
+        echo "pruned $(basename "$link") ($DEST)"
+        ;;
+    esac
   done
 done
