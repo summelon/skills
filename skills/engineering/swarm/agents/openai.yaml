@@ -1,6 +1,0 @@
-interface:
-  display_name: "Swarm"
-  short_description: "Implement a parent issue's children in parallel"
-
-policy:
-  allow_implicit_invocation: false

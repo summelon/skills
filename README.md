@@ -39,7 +39,6 @@ Then start a coordinator with `/coordinator <task>` or `claude --agent coordinat
 #### User-invoked
 
 - **[coordinator](./skills/engineering/coordinator/SKILL.md)** — Run the session as an orchestration-only coordinator: decompose, dispatch bounded workers under task contracts, verify risky work with a fresh worker, synthesize. Ships the Claude Code worker profiles and both harnesses' main-session adapters.
-- **[swarm](./skills/engineering/swarm/SKILL.md)** — Orchestrate parallel subagents to implement, merge, and report every open ticket under a parent issue. Supports foreground, background, and workflow-wave run modes.
 
 #### Model-invoked
 

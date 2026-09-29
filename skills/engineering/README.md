@@ -5,7 +5,6 @@ Skills for daily code work.
 ## User-invoked
 
 - **[coordinator](./coordinator/SKILL.md)** — Run the session as an orchestration-only coordinator: decompose, dispatch bounded workers under task contracts, verify risky work with a fresh worker, synthesize. Ships the Claude Code worker profiles and both harnesses' main-session adapters.
-- **[swarm](./swarm/SKILL.md)** — Orchestrate parallel subagents to implement, merge, and report every open ticket under a parent issue. Supports foreground, background, and workflow-wave run modes.
 
 ## Model-invoked
 
