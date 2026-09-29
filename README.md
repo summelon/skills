@@ -16,6 +16,15 @@ Or for local development, symlink every skill into the harness skill directories
 scripts/link-skills.sh
 ```
 
+The coordinator also needs native agent files that no skill installer places. Install them per user or per project; the script shows a diff and asks before replacing anything:
+
+```bash
+bash skills/engineering/coordinator/scripts/install-agents.sh             # ~/.claude/agents + ~/.codex profile
+bash skills/engineering/coordinator/scripts/install-agents.sh --project   # ./.claude/agents only
+```
+
+Then start a coordinator with `/coordinator <task>` or `claude --agent coordinator --effort high` in Claude Code, or `codex -p coordinator` followed by `$coordinator <task>` in Codex.
+
 ## Scripts
 
 - **[scripts/link-skills.sh](./scripts/link-skills.sh)** — symlink every promoted skill into `~/.claude/skills` and `~/.agents/skills`, pruning links left by removed or renamed skills.
@@ -29,10 +38,12 @@ scripts/link-skills.sh
 
 #### User-invoked
 
+- **[coordinator](./skills/engineering/coordinator/SKILL.md)** — Run the session as an orchestration-only coordinator: decompose, dispatch bounded workers under task contracts, verify risky work with a fresh worker, synthesize. Ships the Claude Code worker profiles and both harnesses' main-session adapters.
 - **[swarm](./skills/engineering/swarm/SKILL.md)** — Orchestrate parallel subagents to implement, merge, and report every open ticket under a parent issue. Supports foreground, background, and workflow-wave run modes.
 
 #### Model-invoked
 
+- **[model-routing](./skills/engineering/model-routing/SKILL.md)** — Route each subagent by tier (what it must know → model) and effort (how hard it must try), capped by the session's own configuration; diagnose failures as missing input, too little effort, or too little capability.
 - **[tracking-goals](./skills/engineering/tracking-goals/SKILL.md)** — Identify and track working goals, route their records, and collect goal-owned documents at closure; resume collected records in place.
 - **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Record nontrivial issues per goal with stable IDs, reproduction steps, and a shared index; recall prior fixes and sweep at closure.
 - **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Align each goal’s targets, gates, and results layout in an individual target file, then fill it with measured evidence.

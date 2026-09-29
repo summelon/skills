@@ -1,0 +1,3 @@
+interface:
+  display_name: "Model Routing"
+  short_description: "Pick a subagent's model and effort by difficulty"

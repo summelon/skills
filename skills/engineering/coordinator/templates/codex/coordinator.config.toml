@@ -1,0 +1,5 @@
+# Codex profile for coordinator sessions: `codex -p coordinator`, then `$coordinator <task>`.
+# Layered over config.toml. Coordinator instructions stay in the skill:
+# spawned workers inherit any developer_instructions set here.
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
