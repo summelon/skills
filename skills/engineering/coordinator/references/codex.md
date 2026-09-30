@@ -11,7 +11,7 @@ Make one `spawn_agent` call per task:
 - a fresh context: `fork_turns: "none"` (v1 tools: `fork_context: false`)
 - a short `task_name` (v2)
 
-Leave `agent_type` unset. GPT-6 sessions get the v2 tools (verified on codex-cli 0.158.0). Codex runs 3 subagents at once by default; queue the rest.
+Leave `agent_type` unset. GPT-6 and GPT-6.1 sessions get the v2 tools (verified on codex-cli 0.159.2). Codex runs 3 subagents at once by default; queue the rest.
 
 ## Collect and follow up
 

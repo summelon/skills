@@ -19,7 +19,7 @@ Your spawn tool names your harness: `Agent` means Claude Code, so read [referenc
 | Tier | The worker must… | Claude Code | Codex |
 | --- | --- | --- | --- |
 | T0 lookup | produce an answer you can check yourself: locate, list, map, run and report, classify output | haiku | gpt-6-luna |
-| T1 routine | follow a clear spec or a known cause, or enumerate where a miss would go unnoticed | sonnet | gpt-6-sol |
+| T1 routine | follow a clear spec or a known cause, or enumerate where a miss would go unnoticed | sonnet | gpt-6.1-sol |
 | T2 hard | resolve ambiguity: unknown root cause, design judgment, concurrency, security, public API, data migration, cross-module coupling | opus | gpt-6-astra |
 | T3 horizon | carry a long autonomous investigation that resists decomposition | fable | gpt-6-astra at xhigh |
 
@@ -73,10 +73,10 @@ next   try → worker-deep + sonnet · know → worker-standard + opus
 | Task | Tier · effort | Reason | Claude Code | Codex |
 | --- | --- | --- | --- | --- |
 | Find where `Foo` is constructed | T0 · down | routine | worker-standard + haiku | luna / low |
-| Map the files and entry points of the `auth` module | T0 · start | routine | worker-standard + haiku | luna / medium |
-| Implement a well-specified endpoint | T1 · start | routine | worker-standard + sonnet | sol / medium |
-| Retry after that fix skipped the integration tests | T1 · up | thoroughness | worker-deep + sonnet | sol / high |
+| Map the files and entry points of the `auth` module | T0 · start | routine | worker-standard + haiku | luna / high |
+| Implement a well-specified endpoint | T1 · start | routine | worker-standard + sonnet | 6.1-sol / low |
+| Retry after that fix skipped the integration tests | T1 · up | thoroughness | worker-deep + sonnet | 6.1-sol / medium |
 | Retry after a thorough diagnosis that was still wrong | T2 · start | capability | worker-standard + opus | astra / medium |
 | Debug an intermittent concurrency failure | T2 · up | capability | worker-deep + opus | astra / high |
 | Verify a shared-memory lifetime change | T2 · up, cross-harness | capability | `codex exec` astra / high | `claude -p` opus / high |
-| Review a one-line typo fix | T0 · start | routine | worker-standard + haiku | luna / medium |
+| Review a one-line typo fix | T0 · start | routine | worker-standard + haiku | luna / high |
