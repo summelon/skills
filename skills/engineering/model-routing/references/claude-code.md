@@ -42,6 +42,8 @@ codex exec --sandbox read-only --ephemeral -C "$REPO" \
   -o "$SCRATCH/verdict.md" - < "$SCRATCH/contract.md"
 ```
 
+This reviewer is static: the read-only sandbox has no temp directory, network, or GPU, so tests fail to start. To run anything, use the coordinator's executable-verification lanes.
+
 Treat it as unavailable when `command -v codex` fails, `codex login status` exits non-zero, the run exits non-zero, or no verdict arrives within 15 minutes.
 
 ## Sources (verified 2026-09-29)

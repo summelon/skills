@@ -26,12 +26,13 @@ Your session's `model` and `model_reasoning_effort` come from the active config,
 Map T1 to `sonnet` and T2 to `opus`, at `--effort high`, capped by your ceiling. Write the contract to a scratch file, then run:
 
 ```bash
-claude -p --model opus --effort high --no-session-persistence \
-  --tools "Read,Grep,Glob,Bash" \
-  --allowedTools "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(git show:*)" \
+claude -p --restricted --model opus --effort high --no-session-persistence \
+  --tools "Read,Grep,Glob" --allowedTools "Read,Grep,Glob" \
   --permission-mode dontAsk \
   < "$SCRATCH/contract.md" > "$SCRATCH/verdict.md"
 ```
+
+Paste `git diff base..head` into the contract: the reviewer has no shell, and `--restricted` confines its file tools to the working directory while ignoring the user, project, and local settings files. Without `--restricted`, a settings `allow` rule such as bare `Bash` overrode the allowlist, and the reviewer wrote files and reached the network; a `Bash(git diff:*)` allowlist still admits `git diff --output=<file>` (observed on Claude Code 2.1.285). The reviewer is static: to run anything, use the coordinator's executable-verification lanes.
 
 Treat it as unavailable when `command -v claude` fails, the run exits non-zero, or no verdict arrives within 15 minutes. A sandbox without network access makes the call fail, which also counts as unavailable.
 

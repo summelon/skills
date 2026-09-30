@@ -38,7 +38,7 @@ Then start a coordinator with `/coordinator <task>` or `claude --agent coordinat
 
 #### User-invoked
 
-- **[coordinator](./skills/engineering/coordinator/SKILL.md)** — Run the session as an orchestration-only coordinator: decompose, dispatch bounded workers under task contracts, verify risky work with a fresh worker, synthesize. Ships the Claude Code worker profiles and both harnesses' main-session adapters.
+- **[coordinator](./skills/engineering/coordinator/SKILL.md)** — Run the session as an orchestration-only coordinator: decompose, dispatch bounded workers under task contracts, verify risky work statically or by execution in a disposable worktree, report each change's evidence state (static, executed, gpu, unverified). Ships the Claude Code worker profiles and both harnesses' main-session adapters.
 
 #### Model-invoked
 

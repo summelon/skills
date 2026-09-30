@@ -25,7 +25,7 @@ Your own tools serve orchestration:
 - git status, branches, and merges
 - writing goal, issue, and target records and plans
 
-Workers write application code, tests, and configuration. When you reach for a third source file or a raw log, dispatch a worker instead.
+Workers write application code, tests, and configuration. When you reach for a third source file or a raw log, dispatch a worker instead. Running a contract's VERIFICATION commands yourself and reading their summary lines is orchestration: it is host-side evidence.
 
 ## Loop
 
@@ -34,12 +34,12 @@ Workers write application code, tests, and configuration. When you reach for a t
    - Run reads in parallel freely.
    - Run writers in parallel only on disjoint file sets, with one writer per subsystem at a time. The usual shape is parallel exploration, then your synthesis, then one implementation worker.
    - Dispatch a worker only when its result can change a decision; do trivial orchestration inline.
-3. **Route.** Run `/model-routing` for each significant dispatch and announce its routing record.
-4. **Dispatch** each task with a task contract.
+3. **Route.** Run `/model-routing` for each significant dispatch. Its routing record goes in visible text in the message that makes the dispatch.
+4. **Dispatch** each task with a task contract. Before the first implementation dispatch, record the base commit (`git rev-parse HEAD`); every review names its exact range `base..head`.
 5. **Collect.** Check each digest's evidence against the acceptance criteria; a claim without evidence is unverified.
-6. **Verify.** The implementer's contract runs the objective checks (tests, typecheck, build). Add a fresh verifier when a trigger holds.
-7. **Decide.** Accept, or dispatch a narrowly scoped correction per `/model-routing`'s failure diagnosis. The correction's contract carries the exact failing checks and the decisive log lines, plus the narrowed objective.
-8. **Report** what changed, the evidence, the verification results, the routing used, and the open risks.
+6. **Verify.** The implementer's contract runs the objective checks (tests, typecheck, build). Check the change against the verifier triggers; when one holds, the change needs a verifier's accept.
+7. **Decide.** Adjudicate each finding from its cited evidence and send the author only the findings that hold. Then accept, or dispatch a narrowly scoped correction per `/model-routing`'s failure diagnosis. The correction's contract carries the exact failing checks and the decisive log lines, plus the narrowed objective. A corrected change goes back to a verifier, scoped to the last reviewed head `..` the new head plus the open findings, before you accept it.
+8. **Report** what changed, the routing used, one evidence line per accepted change, and the open risks.
 
 The session is complete when every acceptance criterion is met with evidence from a worker or verifier, or has been reported to the user as unmet, with its evidence.
 
@@ -75,4 +75,26 @@ Add a fresh verifier for any of these:
 - a fix that already failed once
 - a large diff
 
-`/model-routing` picks the verifier's model and harness. Its contract gives the spec, the acceptance criteria, and the diff or commit range, and leaves out the implementer's reasoning. Its SCOPE is read-only, and it returns findings with evidence plus a verdict: accept or reject.
+`/model-routing` picks the verifier's model and harness. Its contract gives the spec, the acceptance criteria, and the range `base..head`, and leaves out the implementer's reasoning. Its SCOPE is read-only on your checkout, and it returns findings plus a verdict: accept or reject. Each finding carries its evidence kind:
+
+```text
+id  severity  file:line  observation  trigger  evidence: static | reproduced | check-failed
+    (reproduced or check-failed: the command and its decisive output)  recommendation
+```
+
+A reviewer that ran nothing produces `static` findings only, and its accept says nothing about whether the code builds or passes tests. When a claim needs a run (build, tests, integration, device behavior), the verifier executes in a disposable worktree: read [references/verification.md](references/verification.md) for the lanes, the GPU smoke test, and the mutation check.
+
+## Evidence
+
+Each accepted change ends in the strongest evidence state its checks reached:
+
+- `gpu`: its checks ran and passed on the target device
+- `executed`: its build and tests ran and passed
+- `static`: reviewed from source; nothing ran
+- `unverified`: neither reviewed nor run
+
+A runtime claim (it builds, tests pass, CUDA works, outputs match) needs `executed` or `gpu`. When the lane a criterion needs is unavailable, report that criterion unmet and the state reached. The report carries one line per change:
+
+```text
+base..head  executed  review: codex astra/high static, accept · ran: pytest -q (41 passed, host) · triggers: large diff
+```
