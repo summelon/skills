@@ -14,4 +14,4 @@ Dependencies between skills are `/skill`-style prose invocations ("run the `/log
 
 After adding, removing, or renaming a skill, run `scripts/link-skills.sh` to (re)link every skill into the local harness directories (`~/.claude/skills`, `~/.agents/skills`).
 
-The repo installs via `npx skills@latest add <owner>/<repo>` once pushed to GitHub — the installer discovers `SKILL.md` files; no extra manifest is needed.
+The repo is published at <https://github.com/summelon/skills> and installs via `npx skills@latest add summelon/skills` — the installer discovers `SKILL.md` files; no extra manifest is needed.

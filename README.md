@@ -4,15 +4,16 @@ Personal agent skills that accompany milestone-driven development — recording 
 
 ## Install
 
-Via the [skills.sh](https://skills.sh) installer (once this repo is on GitHub):
+Via the [skills.sh](https://skills.sh) installer, from [summelon/skills](https://github.com/summelon/skills):
 
 ```bash
-npx skills@latest add <owner>/skills
+npx skills@latest add summelon/skills
 ```
 
-Or for local development, symlink every skill into the harness skill directories (`~/.claude/skills`, `~/.agents/skills`):
+Or for local development, clone the repo and symlink every skill into the harness skill directories (`~/.claude/skills`, `~/.agents/skills`):
 
 ```bash
+git clone https://github.com/summelon/skills.git && cd skills
 scripts/link-skills.sh
 ```
 
