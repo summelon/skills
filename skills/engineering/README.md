@@ -5,6 +5,7 @@ Skills for daily code work.
 ## User-invoked
 
 - **[coordinator](./coordinator/SKILL.md)** — Run the session as an orchestration-only coordinator: decompose, dispatch bounded workers under task contracts, verify risky work statically or by execution in a disposable worktree, report each change's evidence state (static, executed, gpu, unverified). Ships the Claude Code worker profiles and both harnesses' main-session adapters.
+- **[skill-retro](./skill-retro/SKILL.md)** — Review one skill against its recent real runs: extract each run's arc from Claude Code and Codex transcripts, check it against the skill's own rules, and propose a few evidence-backed changes in a per-skill ledger. Edits only the findings you approve, labelling each change's evidence state (static, executed).
 
 ## Model-invoked
 
