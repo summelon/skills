@@ -45,17 +45,18 @@ Read the worker's digest and its evidence first, then take exactly one row:
 
 | Diagnosis | Signal | Next dispatch |
 | --- | --- | --- |
+| review findings | a verifier's adjudicated findings name each defect | a new task routed by the Tier table (a known cause is T1); resume the implementer instead when its context makes the fix cheaper |
 | missing input | the contract lacked a fact, a file, or a decision | same settings; add the evidence and narrow the contract; resume the same worker where the harness allows |
 | didn't try enough | skipped files or tests, stopped early, unchecked claims | same model, effort one step up |
 | didn't know enough | thorough work that is still wrong, or two workers disagreeing on facts | next tier, effort back to that tier's start |
 | unclear | the evidence fits both of the rows above | effort first; change tier only after more effort fails |
 
-A worker that succeeded is done: never re-run it at a higher setting. Retry any one configuration at most once; a second failure there is diagnosed afresh.
+A worker that succeeded is done: never re-run it at a higher setting. Retry any one configuration at most once; a second failure there is diagnosed afresh. A change a verifier rejects twice points at the spec: diagnose missing input before blaming the worker.
 
 ## Verifier
 
 - Tier at least the implementer's, at that tier's **up** effort from your harness reference.
-- For T2 work, verify cross-harness first: the other vendor's model at the same tier, within the ceiling (the command is in your harness reference). Cross-harness is unavailable when the other CLI is missing, not logged in, exits non-zero, or times out. Then use a fresh same-harness worker on a different model within the ceiling, or else the implementer's model in a fresh context.
+- For T2 work, verify cross-harness first: the other vendor's model at the same tier, within the ceiling (the command is in your harness reference). Cross-harness is unavailable when the other CLI is missing, not logged in, exits non-zero, or times out. Then use a fresh same-harness worker still at the implementer's tier or higher, on a different model when one qualifies within the ceiling, else on the implementer's model.
 
 ## Routing record
 
