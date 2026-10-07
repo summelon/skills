@@ -1,6 +1,6 @@
 ---
 name: logging-issues
-description: Log issues hit during development into the project's issue records (docs/issues/) — attempts tried, root cause, repro, cost, pinned environment. Use right after solving or bypassing a nontrivial issue, at goal closure to sweep the session for unlogged issues, or when a new error may have been seen before.
+description: Log issues hit during development into the goal's issue records (.goals/<goal-id>/issues/) — attempts tried, root cause, repro, cost, environment. Use right after solving or bypassing a nontrivial issue, at goal closure to sweep the session for unlogged issues, or when a new error may have been seen before.
 ---
 
 # Logging Issues
@@ -9,25 +9,39 @@ Development must not be a black box. Every nontrivial fight — what hit, what w
 
 ## Where records live
 
-For log or sweep, use the current goal's routing from `/tracking-goals`; run its identification step if no goal is established. The agent assigns the goal ID, not the user. Recall is read-only and needs no new goal.
+For log or sweep, use the goal selected through `/tracking-goals`; run its identification step if there is no valid selection. The agent assigns the goal ID, not the user. Recall is read-only and needs no goal.
 
-- `docs/issues/README.md` remains the shared index: one line per issue, linking to its actual location, including collected records.
-- New goal detail files start at `docs/issues/<goal-id>.md`. Include the Goal ID and a relative link to the goal's plan.
-- Follow existing goal links when updating records. After collection, edit `docs/goals/<goal-id>/issues/<filename>.md` directly, including on resumption. New issue records for a collected goal belong there too.
-
-If the repository uses another documentation root, follow its established convention consistently.
-
-### Issue IDs
-
-New issues use stable `[<goal-id>-NN]` IDs. Preserve published IDs in existing records; never renumber them on collection or resumption. Plans, targets, reviews, and closing records cite the ID with a link to its detail entry.
-
-### Index line
-
-```markdown
-- [2026-09-07-example-01] solved — concise symptom ([detail](2026-09-07-example.md#issue-anchor))
+```text
+.goals/<goal-id>/
+├── issues/
+│   ├── README.md                        # this goal's discovery index
+│   └── <goal-id>-<short-summary>.md     # one detail file per issue
+└── environment.md                       # dated captures, when needed
 ```
 
-Use the actual heading anchor. The status makes open debts visible without opening each detail file. `/tracking-goals` repairs index links when collecting records; subsequent logging keeps them current.
+Create `issues/` with the goal's first qualifying issue; a goal with none has no `issues/` folder. Each goal keeps its own index; no index spans goals.
+
+### Issue IDs and filenames
+
+New issues use stable `[<goal-id>-NN]` IDs, numbered within the goal. Name each detail file `<goal-id>-<short-summary>.md`, kebab-case from the symptom, for example `2026-10-07-example-parallel-tests-fail.md`. IDs and filenames stay fixed once created, even as diagnosis improves; when a name is taken, choose a more descriptive one rather than overwriting. Published IDs are never renumbered. Plans, verification, handoffs, and goal READMEs cite an issue by its ID, linked to its detail file.
+
+When several checkouts work the same goal, allocate the next number above the highest ID in this goal's `issues/` across every checkout's working tree (`git worktree list`) and other local branches carrying the goal, for example `git grep -hoE '\[<goal-id>-[0-9]+\]' $(git for-each-ref --format='%(refname:short)' refs/heads) -- .goals/<goal-id>/issues/`. If a merge still brings two distinct issues with one ID, the one not yet published (cited anywhere beyond its own detail file and index line) takes the next free number; when both are published, keep both IDs and both index lines, and add a Note to each detail file naming the other. Two records of one issue compact as the sweep describes.
+
+### Index
+
+```markdown
+# Issues: <goal title>
+
+Goal: [<goal-id>](../README.md)
+
+- [2026-10-07-example-01] parallel tests fail under xdist — `env` `perf` ([detail](2026-10-07-example-parallel-tests-fail.md))
+```
+
+One line per issue: ID, short symptom, tags, and detail link. Status lives only in the detail file.
+
+### Legacy records
+
+Goals that predate `.goals/` keep their records: one detail file per goal holding several entries (`docs/issues/<goal-id>.md`, or under a collected `docs/goals/<goal-id>/issues/`), indexed by the shared `docs/issues/README.md`, whose lines carry status. For such a goal, add a new issue to its existing detail file under a `### [<goal-id>-NN] <title>` heading with the fields below, and add its line to the shared index. An existing `Smooth` section stays as history; clean gate results go to verification. Migrating these records is an explicit `/tracking-goals` request.
 
 ## What earns an entry
 
@@ -39,20 +53,22 @@ Log when **any** of these holds:
 4. Environment, dependency, or tooling issue likely to recur across sessions or machines.
 5. The resolution changed the milestone's scope or approach.
 
-Skip: first-try fixes, typos, transient flakes understood immediately. First-try passes go to the **Smooth** section, not their own entry.
+Skip: first-try fixes, typos, transient flakes understood immediately. A gate that passed on the first attempt is evidence for `/aligning-targets`, not an issue entry.
 
 ## Branch: recall — before deep debugging
 
-On hitting a nontrivial error, read `docs/issues/README.md` first, then open the detail file for any line whose symptom, tags, or component matches — **before** starting a deep dive. A prior entry's **Repro** and **Resolution** may end the hunt in one read.
+On hitting a nontrivial error, search the indexes before any detail file, across every goal: `.goals/*/issues/README.md` (a hidden path; name it explicitly, or pass `--hidden` to ripgrep) and the legacy `docs/issues/README.md`. Then open the detail file for any line whose symptom, tags, or component matches — **before** starting a deep dive. A prior entry's **Repro** and **Resolution** may end the hunt in one read.
 
 ## Branch: log — right after the kill
 
-The moment an issue meeting the threshold is solved or bypassed, append an entry to the correct detail file and add its index line. Do not defer to the sweep — context is freshest now, and the session may end before the sweep runs.
+The moment an issue meeting the threshold is solved or bypassed, write its detail file and its index line together, creating `issues/README.md` first if absent. Do not defer to the sweep — context is freshest now, and the session may end before the sweep runs.
 
-Entry template (the single source of truth for the schema):
+Detail file template (the single source of truth for the schema):
 
 ```markdown
-### [<goal-id>-NN] <short issue title>
+# [<goal-id>-NN] <short issue title>
+
+Goal: [<goal-id>](../README.md)
 
 - **Date / Status:** YYYY-MM-DD — solved | bypassed | blocked | open
 - **Symptom:** observed behaviour; quote the decisive error line exactly
@@ -62,59 +78,42 @@ Entry template (the single source of truth for the schema):
 - **Next step:** (only for `bypassed`/`blocked`/`open`) what would close it
 - **Repro:** copy-paste command(s) that trigger the issue
 - **Cost:** wall-time or GPU time spent, and the number of attempts
-- **Environment:** cite the project env-lock and record only the deltas that matter for this issue (GPU id, a version override)
+- **Environment:** link the capture (a repository lockfile, a shared capture, or a dated section of the goal's `environment.md`) and record only the deltas that matter for this issue (GPU id, a version override)
 - **Verification:** how you confirmed it dead
 - **Note:** (optional) forward guidance — a constraint later work must carry ("retain for M3")
-- **Tags:** `env` | `dependency` | `api` | `data` | `perf` | ...
 ```
 
-A `bypassed` status is a debt marker: the entry must say why the bypass was accepted instead of a fix. A `blocked` status carries its own next step; see below.
+A `bypassed` status is a debt marker: the entry must say why the bypass was accepted instead of a fix. Update the status in place as the issue changes.
 
-### Environment lock
+### Environment captures
 
-The environment lock is shared and stays outside collected goal folders. Retain dated captures used by older results rather than replacing their pins; an issue cites the relevant capture and any deltas.
-
-The **Environment** field points at a project-level env-lock instead of repeating pins. If none exists when first needed, create `docs/issues/env.lock.md` (or the project's established location) capturing the pins **with the exact command that produced them**, so a future agent regenerates it rather than trusting a stale paste:
+Cite existing repository lockfiles or shared captures when they pin what matters, including a legacy shared lock such as `docs/issues/env.lock.md`. When new capture material is needed, append a dated section to the goal's `environment.md` **with the exact command that produced it**, so a future agent regenerates it rather than trusting a stale paste, and link that section from the issue's Environment field and from `verification.md`. Captures that older results cite stay as they are; a new capture is a new section.
 
 ```markdown
-# Environment Lock
+# Environment: <goal title>
 
-Captured: YYYY-MM-DDTHH:MMZ
+Goal: [<goal-id>](README.md)
+
+## YYYY-MM-DDTHH:MMZ — <what this capture is for>
 
 <pins: package versions, CUDA/driver, GPU, python>
 
-## Capture command
+Capture command:
+
 <the exact command that produced the pins above>
 ```
 
 ### Blocked issues
 
-A `blocked` entry carries the blocker itself: attempts and evidence in **Tried**, the condition that would clear it in **Next step**. The goal's plan carries the resume path. Write a separate handoff at `docs/handoffs/<goal-id>.md` only when a different agent picks the work up; `/tracking-goals` owns that record's layout and its ownership at collection.
+A `blocked` entry carries the blocker itself: attempts and evidence in **Tried**, the condition that would clear it in **Next step**. The plan's next action links to it. Whether a handoff is needed is `/tracking-goals`' call, made only when a different agent picks the work up.
 
 ## Branch: sweep — at goal closure
 
-When goal work is finalized or closed, sweep **before** `/aligning-targets` fills the final report (the report cites this file's IDs, so it must be complete first):
+When goal work is finalized or closed, sweep **before** `/aligning-targets` fills `verification.md` (it cites these IDs, so they must be complete first):
 
-1. Re-read the session and the detail file; backfill any issue that met the threshold but was never logged.
-2. Compact duplicates — one issue, one ID, one entry.
-3. Write or update the goal's **Smooth** section: one line per gate that passed on the first attempt — cheap positive evidence that the gate ran clean, distinct from an unrecorded gap.
-4. Re-sync `docs/issues/README.md`: one index line per issue, statuses current.
-5. List every entry still `bypassed`, `blocked`, or `open` to the user — these are the goal's open debts.
+1. Re-read the session and the goal's issue records; backfill any issue that met the threshold but was never logged.
+2. Compact duplicates — one issue, one ID, one detail file. When the duplicate's ID is already published, reduce its detail file to a one-line pointer to the surviving entry instead of deleting it.
+3. Check the index against the detail records, per distinct issue: each qualifying issue has exactly one detail record (its own file, or one anchored entry in a legacy or migrated multi-entry file) and exactly one matching index line whose link resolves to that file or anchor. An ID shared by two published issues after a merge is valid only when each detail record carries the Note naming the other (see Issue IDs and filenames). For a legacy goal, keep each shared index line's status in sync with its entry.
+4. List every issue still `bypassed`, `blocked`, or `open` to the user — these are the goal's open debts, carried into the goal README's Unresolved work.
 
-Detail-file header and Smooth section:
-
-```markdown
-# Issues — <goal title>
-
-Goal ID: `<goal-id>`
-
-Plan: [<goal title>](<relative path to the existing plan>)
-
-<≤3 lines: what this work fought, main open risk.>
-
-## Smooth
-
-- YYYY-MM-DD: <gate that passed on the first attempt>
-```
-
-The sweep is complete when every issue meeting the threshold has exactly one entry, the index matches, and the Smooth section reflects the goal's clean gates.
+The sweep is complete when every distinct issue meeting the threshold has exactly one detail record and one index line resolving to it, any ID shared by two published issues carries the cross-referencing Notes, every index link resolves to its file or anchor, and the open debts have been reported. A goal with no qualifying issues finishes the sweep without an `issues/` folder.

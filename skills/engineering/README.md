@@ -12,6 +12,6 @@ Skills for daily code work.
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
 - **[model-routing](./model-routing/SKILL.md)** — Route each subagent by tier (what it must know → model) and effort (how hard it must try), capped by the session's own configuration; diagnose failures as missing input, too little effort, or too little capability.
-- **[tracking-goals](./tracking-goals/SKILL.md)** — Identify and track working goals, route their records, and collect goal-owned documents at closure; resume collected records in place.
-- **[logging-issues](./logging-issues/SKILL.md)** — Record nontrivial issues per goal with stable IDs, reproduction steps, and a shared index; recall prior fixes and sweep at closure.
-- **[aligning-targets](./aligning-targets/SKILL.md)** — Align each goal’s targets, gates, and results layout in an individual target file, then fill it with measured evidence.
+- **[tracking-goals](./tracking-goals/SKILL.md)** — Identify and track working goals in stable, self-contained `.goals/<goal-id>/` folders with a per-checkout active-goal pointer; close goals in place, and resume, adopt, or explicitly migrate legacy records without breaking them.
+- **[logging-issues](./logging-issues/SKILL.md)** — Record nontrivial issues per goal with stable IDs, a per-goal index, and one detail file per issue; recall prior fixes across goals and sweep at closure.
+- **[aligning-targets](./aligning-targets/SKILL.md)** — Align each goal’s gates and results layout in its `verification.md`, then fill it with measured evidence.

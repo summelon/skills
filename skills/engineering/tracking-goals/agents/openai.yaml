@@ -1,3 +1,3 @@
 interface:
   display_name: "Tracking Goals"
-  short_description: "Track working goals and collect their closing records"
+  short_description: "Track goals in stable .goals folders, selected per checkout"

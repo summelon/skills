@@ -1,23 +1,22 @@
 # Handoff layout
 
-Use `docs/handoffs/<goal-id>.md` when another agent or worktree takes over active work, to carry context the receiving agent cannot re-derive from the plan.
+Use `.goals/<goal-id>/handoff.md` when a different agent or worktree takes over the work, to carry context the receiver cannot cheaply recover from the goal's other records. Link it from the goal README's Records.
 
 ```markdown
-# <title>
+# Handoff: <title>
 
-Goal: [<goal title>](../plans/<goal-id>.md)
+Goal: [<goal-id>](README.md)
 
 State: <ready for implementation | accepted | superseded>
 
-Start HEAD: `<full start HEAD>`
-
 ## Read first
 
-<Ordered: repository instructions, the router, the plan, design records, the issue index.>
+<Ordered: repository instructions, the goal README, plan, verification, issue index,
+and any other record the work depends on.>
 
 ## User intent distilled
 
-<What the user actually asked for, in their terms, beyond what the plan's scope section states.>
+<What the user actually asked for, in their terms, beyond the plan's scope.>
 
 ## Context established by inspection
 
@@ -25,13 +24,14 @@ Start HEAD: `<full start HEAD>`
 
 ## Do not change
 
-<Gates, locked defaults, and report layout. Re-confirm with the user instead of deviating.>
+<Links to the gates in verification.md and the plan's locked decisions the receiver
+must re-confirm with the user instead of deviating from.>
 
 ## First action
 
 <Where to start.>
 ```
 
-`State` describes the handoff, not the goal; the router owns the goal's status. The plan owns gates and progress, so a handoff carries context rather than a second copy of them.
+`State` describes the handoff, not the goal; the goal README's lifecycle history owns the goal's status. The plan owns progress and verification owns gates, so a handoff links to them rather than copying them. The receiving checkout selects the goal in its own pointer.
 
-A blocked or interrupted goal needs no handoff of its own. A blocker belongs in the issue record through `/logging-issues`, and the resume path belongs in the plan's next action and lifecycle events. Write a handoff only when a different agent picks the work up.
+A blocked or interrupted goal needs no handoff of its own: the blocker belongs in an issue detail through `/logging-issues`, and the resume path in the plan's next action.
