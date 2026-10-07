@@ -1,4 +1,4 @@
-Personal agent skills following the conventions of [Matt Pocock's skills repo](https://github.com/mattpocock/skills). Write and edit skills per the `writing-great-skills` skill (installed locally from that repo).
+Personal agent skills following the conventions of [Matt Pocock's skills repo](https://github.com/mattpocock/skills). Before writing or editing a skill, load that repo's skill-writing guide from the installed skills, matching it by description, since upstream renames skills. If none is installed, stop and ask the user to install it.
 
 Skills are organized into bucket folders under `skills/`:
 
