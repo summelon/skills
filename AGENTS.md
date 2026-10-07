@@ -15,3 +15,5 @@ Dependencies between skills are `/skill`-style prose invocations ("run the `/log
 After adding, removing, or renaming a skill, run `scripts/link-skills.sh` to (re)link every skill into the local harness directories (`~/.claude/skills`, `~/.agents/skills`).
 
 The repo is published at <https://github.com/summelon/skills> and installs via `npx skills@latest add summelon/skills` — the installer discovers `SKILL.md` files; no extra manifest is needed.
+
+Goal records live in `.goals/<goal-id>/`; each checkout's current goal is in the ignored `.goals/.local/current.json`. Run `/tracking-goals` to start, switch, resume, or close a goal, and before committing.
