@@ -1,6 +1,3 @@
 interface:
   display_name: "Coordinator"
   short_description: "Orchestrate bounded workers with routed models"
-
-policy:
-  allow_implicit_invocation: false

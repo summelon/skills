@@ -1,7 +1,6 @@
 ---
 name: coordinator
-description: Run this session as an orchestration-only coordinator that decomposes the task, dispatches bounded workers routed by /model-routing, verifies risky work independently, and synthesizes the result.
-disable-model-invocation: true
+description: Run this session as an orchestration-only coordinator that decomposes the task, dispatches bounded workers routed by /model-routing, verifies risky work independently, and synthesizes the result. Invoke only when the user explicitly asks for a coordinator session or /makasero directs it.
 ---
 
 # Coordinator
