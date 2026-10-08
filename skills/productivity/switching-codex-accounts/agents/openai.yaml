@@ -1,0 +1,3 @@
+interface:
+  display_name: "Switching Codex Accounts"
+  short_description: "Rotate the codex-auth account on a usage-limit error"
