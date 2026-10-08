@@ -84,11 +84,13 @@ them):
 | --- | --- | --- |
 | Harden and unflag `coordinator` (D1) | done | Frontmatter parses as YAML; Codex gpt-6-astra/high static review accepted after fixing an unquoted `: ` in the description |
 | Write `makasero` `SKILL.md` and `agents/openai.yaml` | done | Codex gpt-6-astra/high static review: no findings |
-| Write `cleanup` `SKILL.md` and `agents/openai.yaml` | planned | |
-| Update top-level and engineering READMEs | planned | |
+| Write `cleanup` `SKILL.md` and `agents/openai.yaml` | done | Codex gpt-6-astra/high static review accepted after two fixes: Close's pointer update deferred past the records commit, and that commit explicitly attributed to the closing goal |
+| Update top-level and engineering READMEs | done | `test -f` on every new link passes |
 | Relink skills | planned | Run `scripts/link-skills.sh` from the main checkout after merge |
 
 ## Next action
 
-Load the upstream skill-writing guide, then apply D1 to `coordinator` and
-draft `skills/engineering/makasero/SKILL.md`.
+Merge this branch, then run `scripts/link-skills.sh` from the main checkout
+for G4. For G7, in a scratch worktree run `/chill-me 1 <throwaway topic>`,
+`/makasero` in a new session, then `/cleanup`, per the reproduction in
+[verification](verification.md). Both are this goal's remaining gates.

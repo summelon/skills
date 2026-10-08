@@ -19,21 +19,29 @@ Amendments: none.
 
 ## Results
 
-Example layout; values are placeholders until filled.
+Measured 2026-10-08 on branch `start_and_end`. Static review: Codex
+`gpt-6-astra` at high effort, read-only, three rounds.
 
 | Gate | Verdict | Evidence |
 | --- | --- | --- |
-| G1 | _pass / fail_ | _frontmatter and yaml lines_ |
-| G2 | _pass / fail_ | _diff of coordinator `SKILL.md` and `agents/openai.yaml`_ |
-| G3 | _pass / fail_ | _README lines; `test -f` results_ |
-| G4 | _pass / pending_ | _`readlink -f` output_ |
-| G5 | _pass / fail_ | _section references; reviewer verdict (static)_ |
-| G6 | _pass / fail_ | _section references; reviewer verdict (static)_ |
-| G7 | _pass / pending_ | _session date, commits made, `git worktree list` after cleanup_ |
+| G1 | pass | Both `SKILL.md` frontmatters parse as YAML with `name`, `description`, `disable-model-invocation: true`; both `openai.yaml` carry `display_name`, `short_description`, `allow_implicit_invocation: false` |
+| G2 | pass | Coordinator frontmatter parses with only `name` and `description`; the description ends "Invoke only when the user explicitly asks for a coordinator session or /makasero directs it."; `policy` block removed from `openai.yaml`; `templates/` untouched |
+| G3 | pass | `makasero` and `cleanup` under User-invoked and `coordinator` under Model-invoked in `README.md` and `skills/engineering/README.md`; `test -f` passes on all four engineering links |
+| G4 | pending | Runs after merge from the main checkout |
+| G5 | pass | Static review found no defects: pointer validation and stop (step 1), `/coordinator` with decide-and-log, stop points, and per-change commits (step 2), fill with the goal left `active` (step 3), report for `/cleanup` (step 4) |
+| G6 | pass | Static review accepted in round 3. Order: base and refusal setup, leftovers with one confirmation, Close with user-review gates put to the user, records commit before rebase, rebase in the worktree with abort-and-propose on conflict, `--ff-only` via `git -C <base checkout>`, post-merge steps, report, `git worktree remove`, `git branch -d`; never pushes. Mechanics match the `update-model` transcript |
+| G7 | pending | Needs an interactive run |
 
 ## Deviations
 
-_None yet._
+- Review round 1 found an unquoted `: ` in the new coordinator description
+  that made its frontmatter invalid YAML; reworded.
+- Review rounds 1 and 2 found that `/tracking-goals` Close leaves the goal
+  terminal before the commit checkpoint, which attributes commits to the
+  selected goal. `cleanup` now defers the pointer update until after the
+  records commit and attributes that commit to the closing goal explicitly.
+  `/tracking-goals` is unchanged (out of scope); its own Close-then-commit
+  wording has the same gap.
 
 ## Reproduction
 

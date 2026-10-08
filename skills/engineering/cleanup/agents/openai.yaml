@@ -1,0 +1,6 @@
+interface:
+  display_name: "Cleanup"
+  short_description: "Close the goal, merge the worktree into its base, remove it"
+
+policy:
+  allow_implicit_invocation: false
