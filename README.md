@@ -48,3 +48,9 @@ Then start a coordinator with `/coordinator <task>` or `claude --agent coordinat
 - **[tracking-goals](./skills/engineering/tracking-goals/SKILL.md)** — Identify and track working goals in stable, self-contained `.goals/<goal-id>/` folders with a per-checkout active-goal pointer; close goals in place, and resume, adopt, or explicitly migrate legacy records without breaking them.
 - **[logging-issues](./skills/engineering/logging-issues/SKILL.md)** — Record nontrivial issues per goal with stable IDs, a per-goal index, and one detail file per issue; recall prior fixes across goals and sweep at closure.
 - **[aligning-targets](./skills/engineering/aligning-targets/SKILL.md)** — Align each goal’s gates and results layout in its `verification.md`, then fill it with measured evidence.
+
+### Productivity
+
+#### User-invoked
+
+- **[chill-me](./skills/productivity/chill-me/SKILL.md)** — A capped grilling session: ask only the top N questions (default 3), assume the rest, then start a goal.

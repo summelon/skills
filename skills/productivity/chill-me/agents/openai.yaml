@@ -1,0 +1,6 @@
+interface:
+  display_name: "Chill Me"
+  short_description: "Capped grilling: ask the top N questions, then start a goal"
+
+policy:
+  allow_implicit_invocation: false
