@@ -90,7 +90,9 @@ them):
 
 ## Next action
 
-Merge this branch, then run `scripts/link-skills.sh` from the main checkout
-for G4. For G7, in a scratch worktree run `/chill-me 1 <throwaway topic>`,
-`/makasero` in a new session, then `/cleanup`, per the reproduction in
-[verification](verification.md). Both are this goal's remaining gates.
+On 2026-10-08 `/cleanup` merged this branch into `main` and removed its
+worktree, leaving the goal `active` at the user's choice because G4 and G7
+can only run after the merge. That run observed `/cleanup` on a real goal,
+not the throwaway G7 asks for. From the main checkout, record G4 from
+`scripts/link-skills.sh`. Then run G7 per the reproduction in
+[verification](verification.md) and close the goal with `/tracking-goals`.
