@@ -1,0 +1,6 @@
+interface:
+  display_name: "Makasero"
+  short_description: "Drive the current goal to its gates with /coordinator and commit"
+
+policy:
+  allow_implicit_invocation: false

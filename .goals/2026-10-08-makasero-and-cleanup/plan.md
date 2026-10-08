@@ -83,7 +83,7 @@ them):
 | Task | State | Evidence |
 | --- | --- | --- |
 | Harden and unflag `coordinator` (D1) | done | Frontmatter parses as YAML; Codex gpt-6-astra/high static review accepted after fixing an unquoted `: ` in the description |
-| Write `makasero` `SKILL.md` and `agents/openai.yaml` | planned | |
+| Write `makasero` `SKILL.md` and `agents/openai.yaml` | done | Codex gpt-6-astra/high static review: no findings |
 | Write `cleanup` `SKILL.md` and `agents/openai.yaml` | planned | |
 | Update top-level and engineering READMEs | planned | |
 | Relink skills | planned | Run `scripts/link-skills.sh` from the main checkout after merge |

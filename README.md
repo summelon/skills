@@ -39,6 +39,7 @@ Then start a coordinator with `/coordinator <task>` or `claude --agent coordinat
 
 #### User-invoked
 
+- **[makasero](./skills/engineering/makasero/SKILL.md)** — Carry the checkout's current goal to its gates unattended: drive `/coordinator` to implement, review, and verify, take and log recommended answers instead of asking, commit each accepted change locally, and leave closure to `/cleanup`.
 - **[skill-retro](./skills/engineering/skill-retro/SKILL.md)** — Review one skill against its recent real runs: extract each run's arc from Claude Code and Codex transcripts, check it against the skill's own rules, and propose a few evidence-backed changes in a per-skill ledger. Edits only the findings you approve, labelling each change's evidence state (static, executed).
 
 #### Model-invoked
