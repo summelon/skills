@@ -393,9 +393,9 @@ parse_claude_week() {
 
   if [ "$CLAUDE_WEEK_RESETS_AT" -le "$probed" ]; then
     CLAUDE_WEEK_RESETS_AT=0
-  elif [ -z "$CLAUDE_WEEK_USED" ] || [ "$CLAUDE_WEEK_USED" -eq 0 ]; then
-    [ "$((CLAUDE_WEEK_RESETS_AT - probed))" -gt "$((CLAUDE_WEEK - WINDOW_START_TOLERANCE))" ] && \
-      CLAUDE_WEEK_RESETS_AT=0
+  elif { [ -z "$CLAUDE_WEEK_USED" ] || [ "$CLAUDE_WEEK_USED" -eq 0 ]; } && \
+       [ "$((CLAUDE_WEEK_RESETS_AT - probed))" -gt "$((CLAUDE_WEEK - WINDOW_START_TOLERANCE))" ]; then
+    CLAUDE_WEEK_RESETS_AT=0
   fi
 }
 
