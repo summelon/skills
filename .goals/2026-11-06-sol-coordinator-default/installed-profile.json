@@ -1,0 +1,8 @@
+{
+  "profile": "/home/allen/.codex/coordinator.config.toml",
+  "backup": "/home/allen/.codex/coordinator.config.toml.bak.20261106174544133856",
+  "model": "gpt-6.1-sol",
+  "model_reasoning_effort": "high",
+  "matches_repository_template": true,
+  "parser_python": "/home/allen/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/bin/python3"
+}

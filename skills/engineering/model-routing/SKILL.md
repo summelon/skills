@@ -35,7 +35,7 @@ Each harness reference lists a **start** effort per tier. Move one step from it:
 
 ## Ceiling
 
-The session doing the dispatch sets the ceiling: no worker goes above its tier, and on its own tier no worker exceeds its effort. Tiers align across harnesses by the table above. When your own effort is not visible to you, assume high.
+An explicit coordinator ceiling in your harness reference takes precedence. Otherwise, the session doing the dispatch sets the ceiling: no worker goes above its tier, and on its own tier no worker exceeds its effort. Tiers align across harnesses by the table above. When your own effort is not visible to you, assume high.
 
 A step that would cross the ceiling is a stop: report the evidence to the user, who can raise the ceiling by relaunching on a stronger configuration.
 

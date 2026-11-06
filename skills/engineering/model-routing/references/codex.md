@@ -25,6 +25,8 @@ The slugs come from `$CODEX_HOME/models_cache.json`. When one disappears from th
 
 Your session's `model` and `model_reasoning_effort` come from the active config, where `codex -p <name>` layers `$CODEX_HOME/<name>.config.toml` over `config.toml`. Assume high when you cannot tell. An astra session at xhigh or above admits T3, and only an astra/max session admits T3's up step.
 
+A `gpt-6.1-sol` session at `high` or above dispatching under `/coordinator` uses **the worker ceiling of a `gpt-6-astra`/high session**: T2 Astra workers and Opus reviewers remain eligible up to high, and lower tiers retain their existing effort choices. Worker tier mappings and T3 entry stay unchanged. Sol sessions and workers outside the coordinator role retain the ordinary session-based ceiling.
+
 ## Cross-harness verifier: Claude Code
 
 Map T1 to `sonnet` and T2 to `opus`, at `--effort high`, capped by your ceiling. Write the contract to a scratch file, then run:

@@ -27,4 +27,4 @@ Leave `agent_type` unset. GPT-6 and GPT-6.1 sessions get the v2 tools (verified 
 
 ## Main-session adapter
 
-`codex -p coordinator` layers `$CODEX_HOME/coordinator.config.toml` (gpt-6-astra at high effort) over your config; then invoke `$coordinator <task>`. The profile holds no instructions, because workers inherit `developer_instructions`.
+`codex -p coordinator` layers `$CODEX_HOME/coordinator.config.toml` (gpt-6.1-sol at high effort) over your config; then invoke `$coordinator <task>`. Use the coordinator's worker ceiling from `/model-routing`. The profile holds no instructions, because workers inherit `developer_instructions`.
