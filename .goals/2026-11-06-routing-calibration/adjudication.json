@@ -1,0 +1,197 @@
+{
+  "provenance": "Root source-based adjudication of the selected 12 answers; final Opus audit independently agreed with every selected criterion verdict. Grades are bound to answer hashes and must not be reused for different model outputs.",
+  "cases": {
+    "A1-proposal-supervision": {
+      "criteria": [
+        {
+          "id": "A1.1",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both distinguish direct selected-window gradients from indirect shared-parameter effects, retaining dense supervision."
+        },
+        {
+          "id": "A1.2",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both give an out-of-window distractor counterexample beyond the 64px patch's per-axis reach; both explicitly avoid confusing square reach with Euclidean radius."
+        },
+        {
+          "id": "A1.3",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both retain dense/coordinate terms and preserve valid masks, reference exclusion and ignore regions."
+        },
+        {
+          "id": "A1.4",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both require prompt/peak selection, capture-rate and held-out tests without claiming measured accuracy or requiring wire geometry."
+        }
+      ],
+      "answer_sha256": {
+        "control": "b3b23f7421ee0952c89f416e0f0c5e7872b756f04a06253939099193afde3e28",
+        "candidate": "a8e0d7bf42c20daf54464ea764caacb8433996364f19b53800598bb2aa801e62"
+      },
+      "false_accepts": 0,
+      "model_induced_followups": 0
+    },
+    "A2-matching-supervision-v2": {
+      "criteria": [
+        {
+          "id": "A2.1",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both identify that Hungarian costs plus 1e8 invalid-entry filtering do not create a semantic quality gate; both explicitly call the matcher for frozen detector evaluation."
+        },
+        {
+          "id": "A2.2",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both separate certified absence, known presence, unknown/ambiguous/support-invalid states and crop/coordinate eligibility; neither fabricates crop absence."
+        },
+        {
+          "id": "A2.3",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both reject shared-map absent zeros that suppress another object's valid positive; spatial supervision must be instance/request conditioned."
+        },
+        {
+          "id": "A2.4",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both retain conservative candidate-owner handling and propose forced-match, overlap, crop, support-invalid and indexing/empty-batch checks; both label evidence static."
+        }
+      ],
+      "answer_sha256": {
+        "control": "8888d0fe7a91764fe67201e7f941cc9b6fa9f57e53bb565f306fdc8cfbc91be6",
+        "candidate": "8bd6ee45d41b2d0f85c5eed3525c8d42920a7dc193926328586668cb16afab71"
+      },
+      "false_accepts": 0,
+      "model_induced_followups": 0
+    },
+    "R1-cache-validation": {
+      "criteria": [
+        {
+          "id": "R1.1",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both reject stale cache reuse before image/model loading and cite identity/CLI gaps; recommend actual-input/model binding or fresh parity rather than saved-array self-consistency."
+        },
+        {
+          "id": "R1.2",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both identify max(existing,NaN)/greater-than fail-open patterns, with a digest-valid/generated-artifact trigger and explicit caveats about omitted helpers."
+        },
+        {
+          "id": "R1.3",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both require finite saved rankings and measured gaps and propose drift/NaN refusal cases; neither claims application/GPU execution."
+        }
+      ],
+      "answer_sha256": {
+        "control": "b523a86fcfe3e616edbcab880da947d09cb176e41774733213e60ab35407d50d",
+        "candidate": "d3a4d03f18c7c94ac7473eed64fee72df3f4a31ab158e6d23582339adb5c7903"
+      },
+      "false_accepts": 0,
+      "model_induced_followups": 0
+    },
+    "R2-recorded-tolerance": {
+      "criteria": [
+        {
+          "id": "R2.1",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both reject HTML_SLACK and identify that structured/human output discloses only the narrower recorded tolerance."
+        },
+        {
+          "id": "R2.2",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both give W=5.0005e-9 as an unauthorized accepted boundary and require exact threshold/next-float tests across all four fields."
+        },
+        {
+          "id": "R2.3",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both preserve independent PORT_TOLERANCE and label conclusions static. Host checks illustrate the scalar arithmetic; they do not execute compare_html."
+        }
+      ],
+      "answer_sha256": {
+        "control": "85fde9c3fc90a689eed889b89f2108be264b4cfad39b05f9f4e545a71b2b6f88",
+        "candidate": "f53cbca6d0e0df2c4e28d00851c4576373ade46aa7974b0e834699a3027452e3"
+      },
+      "false_accepts": 0,
+      "model_induced_followups": 0
+    },
+    "C1-task-graph-v3": {
+      "criteria": [
+        {
+          "id": "C1.1",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both return parseable JSON with two independent native gpt-6.1-sol/medium read-only investigations and complete bounded fresh-context/no-nesting contracts."
+        },
+        {
+          "id": "C1.2",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both identify retry.py overlap, give it exclusively to W1, narrow W2 to docs, and serialize writers."
+        },
+        {
+          "id": "C1.3",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both retain the supplied immutable base, backward compatibility, bounded/idempotent retries, failing-before/passing-after regression and fresh Opus/high review of the exact final range."
+        },
+        {
+          "id": "C1.4",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both state planning only, no execution/completion and no premium first-party route. These are decision checks, not real dispatch execution."
+        }
+      ],
+      "answer_sha256": {
+        "control": "cc44e441c74e83c15dfc9db333115b2431f1541f03789ef28386e5885f8fb4ef",
+        "candidate": "8617c55102e9b47203aa24b648fa9495c2114193bc0ee110e34364b0b6abf5c4"
+      },
+      "false_accepts": 0,
+      "model_induced_followups": 0
+    },
+    "C2-ceiling-corrections-v2": {
+      "criteria": [
+        {
+          "id": "C2.1",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both retain Sol/medium missing-input follow-up and same-config/criterion retry history rather than reset by task label."
+        },
+        {
+          "id": "C2.2",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both preserve original Astra/high floor after Sol/low correction, identify old/new heads and open finding, and stop for eligible authorization."
+        },
+        {
+          "id": "C2.3",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both authorize fresh Sol/high only after documented login failure, explicitly disclose lost vendor diversity and leave the runtime test unmet."
+        },
+        {
+          "id": "C2.4",
+          "control": "pass",
+          "candidate": "pass",
+          "adjudication": "Both stop automatic premium escalation/billing and report unresolved analysis; proposed stronger-model effort is not tested as an executed upgrade."
+        }
+      ],
+      "answer_sha256": {
+        "control": "f0915b46093d8331bb296798c027dc381f099bb40cbf51b8a8432577f2042c45",
+        "candidate": "ae5088603501ecbba05c0dfe68776c87b706d4f223a43ded0779d020f4797dd8"
+      },
+      "false_accepts": 0,
+      "model_induced_followups": 0
+    }
+  }
+}

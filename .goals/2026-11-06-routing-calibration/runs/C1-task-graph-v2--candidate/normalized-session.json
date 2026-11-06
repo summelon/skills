@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-14-07-01a1b023-0366-7122-97f5-da67335b5406.jsonl",
+  "session_id": "01a1b023-0366-7122-97f5-da67335b5406",
+  "cwd": "/tmp/routing-trial-dwzcm7nv",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6.1-sol": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:14:07.395Z",
+  "end": "2026-11-06T09:15:30.183Z",
+  "tokens": {
+   "gpt-6.1-sol": {
+    "in": 5622,
+    "out": 2133,
+    "cache_read": 11264,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 511,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:15:30.165Z",
+   "text": "{\u23ce  \"dispatch_now\": [],\u23ce  \"later_tasks\": [\u23ce    {\u23ce      \"id\": \"resolve_model_mapping\",\u23ce      \"action\": \"Obtain the missing Sol-to-native-Codex-model-ID mapping before dispatch. The supplied text names worker classes but supplies no concrete native IDs; inventing a mapping could exceed authorization.\"\u23ce    },\u23ce    {\u23ce      \"id\": \"I1\",\u23ce      \"depends_on\": [\"resolve_model_mapping\"],\u23ce      \"model\": null,\u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}

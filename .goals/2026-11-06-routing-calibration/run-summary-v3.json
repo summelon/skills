@@ -1,0 +1,172 @@
+[
+  {
+    "case": "C1-task-graph-v3",
+    "lane": "candidate",
+    "category": "coordinator",
+    "requested_model": "gpt-6.1-sol",
+    "requested_effort": "high",
+    "input_sha256": "ddfcfebc0d1767ac148d1e1307097a52c860cc3e04e161dde1edabd5fa6b30d3",
+    "command": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--ignore-rules",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "read-only",
+      "--json",
+      "-C",
+      "/tmp/routing-trial-r2r1alzd",
+      "-m",
+      "gpt-6.1-sol",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "-c",
+      "model_verbosity=\"low\"",
+      "-c",
+      "agents.enabled=false",
+      "-o",
+      "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/C1-task-graph-v3--candidate/answer.md",
+      "-"
+    ],
+    "cwd": "/tmp/routing-trial-r2r1alzd",
+    "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+    "fresh_context": true,
+    "concurrency_cap": 3,
+    "start_utc": "2026-11-06T09:16:39Z",
+    "exit_code": 0,
+    "elapsed_seconds": 62.039,
+    "end_utc": "2026-11-06T09:17:41Z",
+    "events_count": 4,
+    "usage": [
+      {
+        "input_tokens": 17009,
+        "cached_input_tokens": 11264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1578,
+        "reasoning_output_tokens": 513
+      }
+    ],
+    "errors": [],
+    "thread_id": "01a1b025-5919-7751-b4b2-f699b1190fd4",
+    "unexpected_items": [],
+    "requested_model_resolved": "not independently exposed by exec events",
+    "normalized_session_meta": {
+      "harness": "codex",
+      "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-16-40-01a1b025-5919-7751-b4b2-f699b1190fd4.jsonl",
+      "session_id": "01a1b025-5919-7751-b4b2-f699b1190fd4",
+      "cwd": "/tmp/routing-trial-r2r1alzd",
+      "branch": null,
+      "version": "0.166.0",
+      "entrypoint": "codex_exec",
+      "models": {
+        "gpt-6.1-sol": [
+          "high"
+        ]
+      },
+      "start": "2026-11-06T09:16:40.094Z",
+      "end": "2026-11-06T09:17:41.440Z",
+      "tokens": {
+        "gpt-6.1-sol": {
+          "in": 5745,
+          "out": 1578,
+          "cache_read": 11264,
+          "cache_write": 0
+        }
+      },
+      "is_subagent": false,
+      "parent_id": null,
+      "task_words": null,
+      "final_words": 527,
+      "models_omitted": 0,
+      "tokens_omitted": 0
+    },
+    "configured_model_verified": true,
+    "words": 527
+  },
+  {
+    "case": "C1-task-graph-v3",
+    "lane": "control",
+    "category": "coordinator",
+    "requested_model": "gpt-6-astra",
+    "requested_effort": "high",
+    "input_sha256": "ddfcfebc0d1767ac148d1e1307097a52c860cc3e04e161dde1edabd5fa6b30d3",
+    "command": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--ignore-rules",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "read-only",
+      "--json",
+      "-C",
+      "/tmp/routing-trial-c2xe4o5p",
+      "-m",
+      "gpt-6-astra",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "-c",
+      "model_verbosity=\"low\"",
+      "-c",
+      "agents.enabled=false",
+      "-o",
+      "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/C1-task-graph-v3--control/answer.md",
+      "-"
+    ],
+    "cwd": "/tmp/routing-trial-c2xe4o5p",
+    "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+    "fresh_context": true,
+    "concurrency_cap": 3,
+    "start_utc": "2026-11-06T09:16:39Z",
+    "exit_code": 0,
+    "elapsed_seconds": 60.966,
+    "end_utc": "2026-11-06T09:17:40Z",
+    "events_count": 4,
+    "usage": [
+      {
+        "input_tokens": 16947,
+        "cached_input_tokens": 11264,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1248,
+        "reasoning_output_tokens": 181
+      }
+    ],
+    "errors": [],
+    "thread_id": "01a1b025-5936-7d72-be19-366f2a3b2084",
+    "unexpected_items": [],
+    "requested_model_resolved": "not independently exposed by exec events",
+    "normalized_session_meta": {
+      "harness": "codex",
+      "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-16-40-01a1b025-5936-7d72-be19-366f2a3b2084.jsonl",
+      "session_id": "01a1b025-5936-7d72-be19-366f2a3b2084",
+      "cwd": "/tmp/routing-trial-c2xe4o5p",
+      "branch": null,
+      "version": "0.166.0",
+      "entrypoint": "codex_exec",
+      "models": {
+        "gpt-6-astra": [
+          "high"
+        ]
+      },
+      "start": "2026-11-06T09:16:40.121Z",
+      "end": "2026-11-06T09:17:40.341Z",
+      "tokens": {
+        "gpt-6-astra": {
+          "in": 5683,
+          "out": 1248,
+          "cache_read": 11264,
+          "cache_write": 0
+        }
+      },
+      "is_subagent": false,
+      "parent_id": null,
+      "task_words": null,
+      "final_words": 534,
+      "models_omitted": 0,
+      "tokens_omitted": 0
+    },
+    "configured_model_verified": true,
+    "words": 534
+  }
+]

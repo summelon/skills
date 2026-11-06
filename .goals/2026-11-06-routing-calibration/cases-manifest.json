@@ -1,0 +1,47 @@
+{
+  "frozen_before_trials": true,
+  "cases": [
+    {
+      "case": "A1-proposal-supervision",
+      "category": "analysis",
+      "prompt_sha256": "00d276831edd78cd58a78a71fad76ac70d3385a02fd16c5f4c52b3d4d711b302",
+      "oracle_sha256": "aa9e806b4c0482a03e531e7507fee69fca5225ebfc4a239a3b2bb04bc3481f36",
+      "candidate_effort": "medium"
+    },
+    {
+      "case": "A2-matching-supervision",
+      "category": "analysis",
+      "prompt_sha256": "31c0004ed0aad0a1007d1f3b5b49c70221a09188f3fb3ccb8a9fb6dd6eec0cc8",
+      "oracle_sha256": "0c6850fad6757f921227d11032ef7a4dbc6b8e1fc157e805e57245cdd96aa63e",
+      "candidate_effort": "medium"
+    },
+    {
+      "case": "R1-cache-validation",
+      "category": "review",
+      "prompt_sha256": "0bce25c23555632c654d9f358d895f184635edf4b014647da0ef7606843f3fd7",
+      "oracle_sha256": "45cc54558483b45655058512e1d66c1d56c2697650911f75faa078d8a5868fc1",
+      "candidate_effort": "high"
+    },
+    {
+      "case": "R2-recorded-tolerance",
+      "category": "review",
+      "prompt_sha256": "1e21e378526f87bb95d87f9a96e9cde6d1b8858df127d50f8d52369dbe87e58e",
+      "oracle_sha256": "bede6637ed0c7e1f48962767e2a6fe73c988ab952d5e5dd0065f9d8bf61e4ed3",
+      "candidate_effort": "high"
+    },
+    {
+      "case": "C1-task-graph",
+      "category": "coordinator",
+      "prompt_sha256": "4e6f5205128550dc93e79ce86d8b5ed305a80d3b97ad3716f629e20ea183ba28",
+      "oracle_sha256": "0d39cb65eae2904220c069558fcd6f439798852eb0b4b60a84923bb9d34b66d0",
+      "candidate_effort": "high"
+    },
+    {
+      "case": "C2-ceiling-corrections",
+      "category": "coordinator",
+      "prompt_sha256": "fc0648303beb648d75548078425f97988f397cd1b0d9e6951a9192a58babceae",
+      "oracle_sha256": "2b91e0a5c0face55a3a8c2d4ca6eaaa9486acaff50bf943c39d2e41f74fd5896",
+      "candidate_effort": "high"
+    }
+  ]
+}

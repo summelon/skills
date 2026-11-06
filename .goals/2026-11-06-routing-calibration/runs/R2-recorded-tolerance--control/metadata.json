@@ -1,0 +1,83 @@
+{
+  "case": "R2-recorded-tolerance",
+  "lane": "control",
+  "category": "review",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "high",
+  "input_sha256": "1e21e378526f87bb95d87f9a96e9cde6d1b8858df127d50f8d52369dbe87e58e",
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--json",
+    "-C",
+    "/tmp/routing-trial-v5_e9z19",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"high\"",
+    "-c",
+    "model_verbosity=\"low\"",
+    "-c",
+    "agents.enabled=false",
+    "-o",
+    "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/R2-recorded-tolerance--control/answer.md",
+    "-"
+  ],
+  "cwd": "/tmp/routing-trial-v5_e9z19",
+  "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+  "fresh_context": true,
+  "concurrency_cap": 3,
+  "start_utc": "2026-11-06T09:10:17Z",
+  "exit_code": 0,
+  "elapsed_seconds": 28.526,
+  "end_utc": "2026-11-06T09:10:45Z",
+  "events_count": 4,
+  "usage": [
+    {
+      "input_tokens": 18742,
+      "cached_input_tokens": 11264,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 625,
+      "reasoning_output_tokens": 151
+    }
+  ],
+  "errors": [],
+  "thread_id": "01a1b01f-836a-7271-9e5c-493a938b5f6f",
+  "unexpected_items": [],
+  "requested_model_resolved": "not independently exposed by exec events",
+  "normalized_session_meta": {
+    "harness": "codex",
+    "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-10-17-01a1b01f-836a-7271-9e5c-493a938b5f6f.jsonl",
+    "session_id": "01a1b01f-836a-7271-9e5c-493a938b5f6f",
+    "cwd": "/tmp/routing-trial-v5_e9z19",
+    "branch": null,
+    "version": "0.166.0",
+    "entrypoint": "codex_exec",
+    "models": {
+      "gpt-6-astra": [
+        "high"
+      ]
+    },
+    "start": "2026-11-06T09:10:17.711Z",
+    "end": "2026-11-06T09:10:45.152Z",
+    "tokens": {
+      "gpt-6-astra": {
+        "in": 7478,
+        "out": 625,
+        "cache_read": 11264,
+        "cache_write": 0
+      }
+    },
+    "is_subagent": false,
+    "parent_id": null,
+    "task_words": null,
+    "final_words": 290,
+    "models_omitted": 0,
+    "tokens_omitted": 0
+  }
+}

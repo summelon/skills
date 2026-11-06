@@ -1,0 +1,30 @@
+{
+  "frozen_before_trials": true,
+  "revision": "Single missing-input repair; unchanged criteria and scope",
+  "cases": [
+    {
+      "case": "A2-matching-supervision-v2",
+      "category": "analysis",
+      "prompt_sha256": "dd4a6a6309116b32bf881ab0f0d5b81d2896684a30c9294ad17867e1ba0c9d19",
+      "oracle_sha256": "5661b3f6b4e2fcfeb465d080607fb183c184ce6c2f5bd76d04f72a004774e8a5",
+      "candidate_effort": "medium",
+      "supersedes": "A2-matching-supervision"
+    },
+    {
+      "case": "C1-task-graph-v2",
+      "category": "coordinator",
+      "prompt_sha256": "fd64ec96511d65258fc32759232ec4b3821214a102f150a49080bfa897afe0d5",
+      "oracle_sha256": "301da85801807c43f76ba1169b3d3ceef891e51cff998e4aa9073bef18e81521",
+      "candidate_effort": "high",
+      "supersedes": "C1-task-graph"
+    },
+    {
+      "case": "C2-ceiling-corrections-v2",
+      "category": "coordinator",
+      "prompt_sha256": "a42476a95edf21908f1a2878ddfbadb6fcafd6b86a4ea33daa5ebf41d02ed128",
+      "oracle_sha256": "ab0f9baa07b307038be6d4b747fb4d5c21c72c77745163bfd60988b0d8c146c4",
+      "candidate_effort": "high",
+      "supersedes": "C2-ceiling-corrections"
+    }
+  ]
+}

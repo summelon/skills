@@ -1,0 +1,42 @@
+{
+  "case": "R2-recorded-tolerance",
+  "category": "review",
+  "provenance": "Reconstructed task contract on frozen real source artifacts, not the original historical prompt.",
+  "sources": [
+    {
+      "repo": "/home/allen/project/repo/FG-CLIP",
+      "commit": "ed8b3cff214fe4c272d3a1fb989d03a6c5a112d4",
+      "file": "caption_tune/labo/paired_attribution.py",
+      "ranges": [
+        [
+          78,
+          101
+        ],
+        [
+          688,
+          770
+        ],
+        [
+          1020,
+          1058
+        ]
+      ],
+      "full_file_sha256": "a10f89cdabb1f4ee2a60db08104003a34635ec8ee861f542cbc6a5a4d01b4fb3"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "R2.1",
+      "pass": "Reject the extra HTML_SLACK allowance as inconsistent with the exact stored/reported tolerance; cite comparison and output fields."
+    },
+    {
+      "id": "R2.2",
+      "pass": "Provide an example just above an exact declared threshold but within +1e-12 that is accepted; recommend exact <= thresholds and regression for all four fields at/above boundary."
+    },
+    {
+      "id": "R2.3",
+      "pass": "Preserve valid separate PORT_TOLERANCE semantics and label static evidence; no false runtime or GPU claim."
+    }
+  ],
+  "promotion_scope": "Only the supplied bounded task; no broad model-equivalence claim."
+}

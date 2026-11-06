@@ -1,0 +1,63 @@
+{
+  "case": "A2-matching-supervision-v2",
+  "category": "analysis",
+  "provenance": "Reconstructed task contract on frozen real source artifacts, not the original historical prompt.",
+  "sources": [
+    {
+      "repo": "/home/allen/.herdr/worktrees/sam3/kp-arch",
+      "commit": "8b21fb79c867edc05663d296216a3f2e178ab8b5",
+      "file": "sam3/train/matcher.py",
+      "ranges": [
+        [
+          470,
+          550
+        ],
+        [
+          565,
+          625
+        ]
+      ],
+      "full_file_sha256": "95f8a29a3c0c03d321a7815b805a5ad8baeb688d3dbf631be9d1bb120193b6ed"
+    },
+    {
+      "kind": "reconstructed_contract",
+      "origin": "coordinator retro session 01a17cc0 and sam3 goal 2026-10-13-kp-arch-design supervision-contract issue; excludes its resolved answer"
+    },
+    {
+      "kind": "additional_frozen_source",
+      "file": "sam3/train/matcher.py",
+      "commit": "8b21fb79c867edc05663d296216a3f2e178ab8b5",
+      "ranges": [
+        [
+          1,
+          37
+        ],
+        [
+          626,
+          692
+        ]
+      ]
+    }
+  ],
+  "criteria": [
+    {
+      "id": "A2.1",
+      "pass": "Recognize matching can force assignments despite poor overlap/quality; require a declared quality/identity gate before landmark supervision, and explicit matching when frozen evaluation does not expose training matches."
+    },
+    {
+      "id": "A2.2",
+      "pass": "Certified absence trains negative presence and no coordinate; unknown, ambiguous ownership, invalid support and exclusions are ignored rather than implicitly negative; crop visibility must not fabricate physical absence."
+    },
+    {
+      "id": "A2.3",
+      "pass": "A per-instance absent zero spatial target must not suppress another object's positive on a shared heatmap; require instance-conditioned or otherwise conflict-free spatial supervision."
+    },
+    {
+      "id": "A2.4",
+      "pass": "Track conservative candidate-owner exclusion for unresolved annotations; propose tests for forced low-quality matches, overlapping positive/absent objects and ambiguous/cropped/support-invalid cases; do not assert runtime success."
+    }
+  ],
+  "promotion_scope": "Only the supplied bounded task; no broad model-equivalence claim.",
+  "supersedes": "A2-matching-supervision",
+  "revision_reason": "Repair missing input only; frozen acceptance criteria unchanged."
+}

@@ -1,0 +1,83 @@
+{
+  "case": "A2-matching-supervision-v2",
+  "lane": "candidate",
+  "category": "analysis",
+  "requested_model": "gpt-6.1-sol",
+  "requested_effort": "medium",
+  "input_sha256": "dd4a6a6309116b32bf881ab0f0d5b81d2896684a30c9294ad17867e1ba0c9d19",
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--json",
+    "-C",
+    "/tmp/routing-trial-2rthtj9r",
+    "-m",
+    "gpt-6.1-sol",
+    "-c",
+    "model_reasoning_effort=\"medium\"",
+    "-c",
+    "model_verbosity=\"low\"",
+    "-c",
+    "agents.enabled=false",
+    "-o",
+    "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/A2-matching-supervision-v2--candidate/answer.md",
+    "-"
+  ],
+  "cwd": "/tmp/routing-trial-2rthtj9r",
+  "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+  "fresh_context": true,
+  "concurrency_cap": 3,
+  "start_utc": "2026-11-06T09:14:06Z",
+  "exit_code": 0,
+  "elapsed_seconds": 46.469,
+  "end_utc": "2026-11-06T09:14:53Z",
+  "events_count": 4,
+  "usage": [
+    {
+      "input_tokens": 19426,
+      "cached_input_tokens": 11264,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 935,
+      "reasoning_output_tokens": 85
+    }
+  ],
+  "errors": [],
+  "thread_id": "01a1b023-036d-7202-8c41-72f65e0b016c",
+  "unexpected_items": [],
+  "requested_model_resolved": "not independently exposed by exec events",
+  "normalized_session_meta": {
+    "harness": "codex",
+    "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-14-07-01a1b023-036d-7202-8c41-72f65e0b016c.jsonl",
+    "session_id": "01a1b023-036d-7202-8c41-72f65e0b016c",
+    "cwd": "/tmp/routing-trial-2rthtj9r",
+    "branch": null,
+    "version": "0.166.0",
+    "entrypoint": "codex_exec",
+    "models": {
+      "gpt-6.1-sol": [
+        "medium"
+      ]
+    },
+    "start": "2026-11-06T09:14:07.396Z",
+    "end": "2026-11-06T09:14:52.896Z",
+    "tokens": {
+      "gpt-6.1-sol": {
+        "in": 8162,
+        "out": 935,
+        "cache_read": 11264,
+        "cache_write": 0
+      }
+    },
+    "is_subagent": false,
+    "parent_id": null,
+    "task_words": null,
+    "final_words": 604,
+    "models_omitted": 0,
+    "tokens_omitted": 0
+  }
+}

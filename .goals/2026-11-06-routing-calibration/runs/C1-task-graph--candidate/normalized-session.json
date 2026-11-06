@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-10-46-01a1b01f-f38d-7211-8bc3-f038a4d206b5.jsonl",
+  "session_id": "01a1b01f-f38d-7211-8bc3-f038a4d206b5",
+  "cwd": "/tmp/routing-trial-ne5t_ge9",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6.1-sol": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:10:46.418Z",
+  "end": "2026-11-06T09:11:43.923Z",
+  "tokens": {
+   "gpt-6.1-sol": {
+    "in": 1459,
+    "out": 1482,
+    "cache_read": 15360,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 545,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:11:43.915Z",
+   "text": "{\u23ce  \"dispatch_now\": [\u23ce    {\u23ce      \"id\": \"I1\",\u23ce      \"model\": \"Opus\",\u23ce      \"effort\": \"medium\",\u23ce      \"OBJECTIVE\": \"Identify retry behavior, caller dependencies, and backward-compatible public option designs.\",\u23ce      \"CONTEXT\": \"Planning only. Supplied base HEAD: 1111111111111111111111111111111111111111. Timeout cause and implementation are unverified.\",\u23ce      \"SCOPE\": \"Read retry.py and relevant \u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}

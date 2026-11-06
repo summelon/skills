@@ -1,0 +1,31 @@
+{
+  "case": "C1-task-graph",
+  "category": "coordinator",
+  "provenance": "Reconstructed task contract on frozen real source artifacts, not the original historical prompt.",
+  "sources": [
+    {
+      "kind": "synthetic_orchestration_decision_scenario",
+      "origin": "Retro ownership, exact-review-range, independent-review and acceptance-handling rules; no historical task replay",
+      "scope": "planning/contract behavior only, not end-to-end autonomous execution"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "C1.1",
+      "pass": "Dispatch decision-relevant independent read-only I1/I2 in parallel under bounded fresh-context contracts with no nesting, explicit Sol<=high/Luna appropriate settings and verifiable returns."
+    },
+    {
+      "id": "C1.2",
+      "pass": "Recognize overlapping retry.py writers; serialize W1/W2 or give docs writer only disjoint docs after API settled; do not parallelize conflicting mutations."
+    },
+    {
+      "id": "C1.3",
+      "pass": "Record supplied base before writing, retain backward compatibility/idempotence acceptance and reproducing test; require fresh Opus/high cross-vendor review of exact base..head for public API T2 changes."
+    },
+    {
+      "id": "C1.4",
+      "pass": "Do not claim completion or passed checks before evidence; do not request premium work or execute tasks. Return parseable requested JSON."
+    }
+  ],
+  "promotion_scope": "Only the supplied bounded task; no broad model-equivalence claim."
+}

@@ -1,0 +1,14 @@
+{
+  "frozen_before_trials": true,
+  "revision": "Explicit catalog supplied; unchanged acceptance criteria. No more fixture revisions planned.",
+  "cases": [
+    {
+      "case": "C1-task-graph-v3",
+      "category": "coordinator",
+      "prompt_sha256": "ddfcfebc0d1767ac148d1e1307097a52c860cc3e04e161dde1edabd5fa6b30d3",
+      "oracle_sha256": "260ef220f90d49270f89c347338144736455f64eedc0212eca21e2401e274bab",
+      "candidate_effort": "high",
+      "supersedes": "C1-task-graph-v2"
+    }
+  ]
+}

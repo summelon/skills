@@ -1,0 +1,83 @@
+{
+  "case": "C1-task-graph",
+  "lane": "candidate",
+  "category": "coordinator",
+  "requested_model": "gpt-6.1-sol",
+  "requested_effort": "high",
+  "input_sha256": "4e6f5205128550dc93e79ce86d8b5ed305a80d3b97ad3716f629e20ea183ba28",
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--json",
+    "-C",
+    "/tmp/routing-trial-ne5t_ge9",
+    "-m",
+    "gpt-6.1-sol",
+    "-c",
+    "model_reasoning_effort=\"high\"",
+    "-c",
+    "model_verbosity=\"low\"",
+    "-c",
+    "agents.enabled=false",
+    "-o",
+    "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/C1-task-graph--candidate/answer.md",
+    "-"
+  ],
+  "cwd": "/tmp/routing-trial-ne5t_ge9",
+  "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+  "fresh_context": true,
+  "concurrency_cap": 3,
+  "start_utc": "2026-11-06T09:10:45Z",
+  "exit_code": 0,
+  "elapsed_seconds": 58.369,
+  "end_utc": "2026-11-06T09:11:44Z",
+  "events_count": 4,
+  "usage": [
+    {
+      "input_tokens": 16819,
+      "cached_input_tokens": 15360,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 1482,
+      "reasoning_output_tokens": 449
+    }
+  ],
+  "errors": [],
+  "thread_id": "01a1b01f-f38d-7211-8bc3-f038a4d206b5",
+  "unexpected_items": [],
+  "requested_model_resolved": "not independently exposed by exec events",
+  "normalized_session_meta": {
+    "harness": "codex",
+    "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-10-46-01a1b01f-f38d-7211-8bc3-f038a4d206b5.jsonl",
+    "session_id": "01a1b01f-f38d-7211-8bc3-f038a4d206b5",
+    "cwd": "/tmp/routing-trial-ne5t_ge9",
+    "branch": null,
+    "version": "0.166.0",
+    "entrypoint": "codex_exec",
+    "models": {
+      "gpt-6.1-sol": [
+        "high"
+      ]
+    },
+    "start": "2026-11-06T09:10:46.418Z",
+    "end": "2026-11-06T09:11:43.923Z",
+    "tokens": {
+      "gpt-6.1-sol": {
+        "in": 1459,
+        "out": 1482,
+        "cache_read": 15360,
+        "cache_write": 0
+      }
+    },
+    "is_subagent": false,
+    "parent_id": null,
+    "task_words": null,
+    "final_words": 545,
+    "models_omitted": 0,
+    "tokens_omitted": 0
+  }
+}

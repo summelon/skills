@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-14-07-01a1b023-0385-7951-b077-7399043430f4.jsonl",
+  "session_id": "01a1b023-0385-7951-b077-7399043430f4",
+  "cwd": "/tmp/routing-trial-hm3mbqhm",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6-astra": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:14:07.394Z",
+  "end": "2026-11-06T09:15:00.806Z",
+  "tokens": {
+   "gpt-6-astra": {
+    "in": 8096,
+    "out": 1001,
+    "cache_read": 11264,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 595,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:15:00.788Z",
+   "text": "**Reject the shortcut.** It conflates missing evidence with absence, detection assignment with object identity, and instance-specific absence with image-wide absence.\u23ce\u23ce**Critical issues**\u23ce\u23ce- Missing annotations, unresolved ownership, crop exclusion, and occlusion cannot automatically become negatives. An invalid support prompt must contribute no loss.\u23ce- A shared zero heatmap for an absent pair ca\u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}

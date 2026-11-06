@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-09-03-01a1b01e-62df-77c3-9393-8854444895a6.jsonl",
+  "session_id": "01a1b01e-62df-77c3-9393-8854444895a6",
+  "cwd": "/tmp/routing-trial-wl_wmlob",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6-astra": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:09:03.843Z",
+  "end": "2026-11-06T09:10:16.967Z",
+  "tokens": {
+   "gpt-6-astra": {
+    "in": 6695,
+    "out": 1215,
+    "cache_read": 11264,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 457,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:10:16.938Z",
+   "text": "**REJECT \u2014 static evidence only.** The supplied path does not establish current image/model parity and contains nonfinite comparison gaps.\u23ce\u23ce1. **Reuse is not bound to the actual image, preprocessing, and model inputs.**  \u23ce   **Lines:** `paired_response.py:665\u2013680`; `cli/labo.py:1696\u20131718, 1726\u20131742`.\u23ce\u23ce   **Trigger:** Keep the pinned data, text, and settings unchanged, but change `args.root` or re\u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}

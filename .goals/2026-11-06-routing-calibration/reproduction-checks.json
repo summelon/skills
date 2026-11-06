@@ -1,0 +1,6 @@
+{
+  "fresh_directory_aggregation": "pass: quality and category measurements equal original",
+  "changed_answer_rejected": "pass: new semantic adjudication required",
+  "v3_regeneration": "pass: exact original frozen bytes",
+  "new_model_trials": 0
+}

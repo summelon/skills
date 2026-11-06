@@ -1,0 +1,50 @@
+{
+  "case": "R1-cache-validation",
+  "category": "review",
+  "provenance": "Reconstructed task contract on frozen real source artifacts, not the original historical prompt.",
+  "sources": [
+    {
+      "repo": "/home/allen/project/repo/FG-CLIP",
+      "commit": "ed8b3cff214fe4c272d3a1fb989d03a6c5a112d4",
+      "file": "caption_tune/labo/paired_response.py",
+      "ranges": [
+        [
+          644,
+          695
+        ],
+        [
+          711,
+          809
+        ]
+      ],
+      "full_file_sha256": "6e42ad684a44aec4acfc204d6a1bf8f7057247c1e04c1dded9dd92f698655482"
+    },
+    {
+      "repo": "/home/allen/project/repo/FG-CLIP",
+      "commit": "ed8b3cff214fe4c272d3a1fb989d03a6c5a112d4",
+      "file": "caption_tune/cli/labo.py",
+      "ranges": [
+        [
+          1678,
+          1747
+        ]
+      ],
+      "full_file_sha256": "4fc373cc15f45a8de0e5e0b559036e01ce4c2f0773e908bb2b72b578729b20f1"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "R1.1",
+      "pass": "Reject and identify stale cache reuse: current identity lacks actual image manifest/content and model snapshot provenance; hit returns before model/image re-encoding. Saved-cosine parity does not establish current input parity. Cite both identity and CLI path; recommend live-input binding/refusal or fresh verification."
+    },
+    {
+      "id": "R1.2",
+      "pass": "Identify NaN stored ranking/gap bypass through max(existing,nan) and > tolerance comparisons, including the digest-valid/produced-artifact condition rather than falsely claiming any post-save corruption bypasses checks."
+    },
+    {
+      "id": "R1.3",
+      "pass": "Recommend explicit finiteness checks before comparisons plus drift/NaN regression cases; keep findings static and avoid unsupported runtime claims."
+    }
+  ],
+  "promotion_scope": "Only the supplied bounded task; no broad model-equivalence claim."
+}

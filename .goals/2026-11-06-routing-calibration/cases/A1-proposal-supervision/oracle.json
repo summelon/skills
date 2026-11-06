@@ -1,0 +1,42 @@
+{
+  "case": "A1-proposal-supervision",
+  "category": "analysis",
+  "provenance": "Reconstructed task contract on frozen real source artifacts, not the original historical prompt.",
+  "sources": [
+    {
+      "repo": "/home/allen/.herdr/worktrees/sam3/kp-arch",
+      "commit": "8b21fb79c867edc05663d296216a3f2e178ab8b5",
+      "file": "docs/keypoint_design_refined.md",
+      "ranges": [
+        [
+          166,
+          244
+        ],
+        [
+          294,
+          311
+        ]
+      ],
+      "full_file_sha256": "697ed76f465b7002f88ea693e124701057a50769751490f0f69270dd8294d4d4"
+    }
+  ],
+  "criteria": [
+    {
+      "id": "A1.1",
+      "pass": "Reject coordinate-only as a generally sufficient replacement; a wrong hard-argmax window receives only local direct coordinate gradients, not direct per-logit supervision of a distant correct peak. Do not claim shared parameters can never alter outside logits."
+    },
+    {
+      "id": "A1.2",
+      "pass": "Give a counterexample with GT outside the selected window and >32 px from X0; sigmoid refinement is confined to its 64px patch."
+    },
+    {
+      "id": "A1.3",
+      "pass": "Retain or replace dense spatial/proposal supervision with an explicit signal that can reward the distant GT and penalize wrong alternatives, and mask ignored/invalid/reference supervision correctly."
+    },
+    {
+      "id": "A1.4",
+      "pass": "Propose proposal recall/capture-range and held-out localization checks; distinguish structural reasoning from measured model performance; avoid mandatory wire geometry."
+    }
+  ],
+  "promotion_scope": "Only the supplied bounded task; no broad model-equivalence claim."
+}

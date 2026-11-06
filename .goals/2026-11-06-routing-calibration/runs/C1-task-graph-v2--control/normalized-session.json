@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-14-54-01a1b023-b9ae-7a90-9a6b-7e0821e735cf.jsonl",
+  "session_id": "01a1b023-b9ae-7a90-9a6b-7e0821e735cf",
+  "cwd": "/tmp/routing-trial-u0p2__rj",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6-astra": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:14:54.067Z",
+  "end": "2026-11-06T09:16:25.944Z",
+  "tokens": {
+   "gpt-6-astra": {
+    "in": 5560,
+    "out": 1697,
+    "cache_read": 11264,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 510,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:16:25.924Z",
+   "text": "{\u23ce  \"dispatch_now\": [],\u23ce  \"later_tasks\": [\u23ce    {\u23ce      \"id\": \"I1\",\u23ce      \"status\": \"Ready once native model mapping is supplied; parallel with I2\",\u23ce      \"model\": null,\u23ce      \"model_profile\": \"T2 Sol\",\u23ce      \"effort\": \"medium\",\u23ce      \"OBJECTIVE\": \"Identify timeout and retry control flow and backward-compatibility constraints.\",\u23ce      \"CONTEXT\": \"Base HEAD: 1111111111111111111111111111111111111111\u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}

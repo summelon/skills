@@ -1,0 +1,83 @@
+{
+  "case": "C2-ceiling-corrections-v2",
+  "lane": "control",
+  "category": "coordinator",
+  "requested_model": "gpt-6-astra",
+  "requested_effort": "high",
+  "input_sha256": "a42476a95edf21908f1a2878ddfbadb6fcafd6b86a4ea33daa5ebf41d02ed128",
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--json",
+    "-C",
+    "/tmp/routing-trial-e3634uxu",
+    "-m",
+    "gpt-6-astra",
+    "-c",
+    "model_reasoning_effort=\"high\"",
+    "-c",
+    "model_verbosity=\"low\"",
+    "-c",
+    "agents.enabled=false",
+    "-o",
+    "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/C2-ceiling-corrections-v2--control/answer.md",
+    "-"
+  ],
+  "cwd": "/tmp/routing-trial-e3634uxu",
+  "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+  "fresh_context": true,
+  "concurrency_cap": 3,
+  "start_utc": "2026-11-06T09:15:01Z",
+  "exit_code": 0,
+  "elapsed_seconds": 37.139,
+  "end_utc": "2026-11-06T09:15:38Z",
+  "events_count": 4,
+  "usage": [
+    {
+      "input_tokens": 16923,
+      "cached_input_tokens": 11264,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 843,
+      "reasoning_output_tokens": 177
+    }
+  ],
+  "errors": [],
+  "thread_id": "01a1b023-d90c-7d32-8ab4-6c5700d59a47",
+  "unexpected_items": [],
+  "requested_model_resolved": "not independently exposed by exec events",
+  "normalized_session_meta": {
+    "harness": "codex",
+    "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-15-01-01a1b023-d90c-7d32-8ab4-6c5700d59a47.jsonl",
+    "session_id": "01a1b023-d90c-7d32-8ab4-6c5700d59a47",
+    "cwd": "/tmp/routing-trial-e3634uxu",
+    "branch": null,
+    "version": "0.166.0",
+    "entrypoint": "codex_exec",
+    "models": {
+      "gpt-6-astra": [
+        "high"
+      ]
+    },
+    "start": "2026-11-06T09:15:01.775Z",
+    "end": "2026-11-06T09:15:37.984Z",
+    "tokens": {
+      "gpt-6-astra": {
+        "in": 5659,
+        "out": 843,
+        "cache_read": 11264,
+        "cache_write": 0
+      }
+    },
+    "is_subagent": false,
+    "parent_id": null,
+    "task_words": null,
+    "final_words": 391,
+    "models_omitted": 0,
+    "tokens_omitted": 0
+  }
+}

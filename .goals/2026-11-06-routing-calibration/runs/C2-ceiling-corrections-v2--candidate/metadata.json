@@ -1,0 +1,83 @@
+{
+  "case": "C2-ceiling-corrections-v2",
+  "lane": "candidate",
+  "category": "coordinator",
+  "requested_model": "gpt-6.1-sol",
+  "requested_effort": "high",
+  "input_sha256": "a42476a95edf21908f1a2878ddfbadb6fcafd6b86a4ea33daa5ebf41d02ed128",
+  "command": [
+    "codex",
+    "exec",
+    "--ignore-user-config",
+    "--ignore-rules",
+    "--skip-git-repo-check",
+    "--sandbox",
+    "read-only",
+    "--json",
+    "-C",
+    "/tmp/routing-trial-_nhjhys5",
+    "-m",
+    "gpt-6.1-sol",
+    "-c",
+    "model_reasoning_effort=\"high\"",
+    "-c",
+    "model_verbosity=\"low\"",
+    "-c",
+    "agents.enabled=false",
+    "-o",
+    "/home/allen/project/codebase/skills/.goals/2026-11-06-routing-calibration/runs/C2-ceiling-corrections-v2--candidate/answer.md",
+    "-"
+  ],
+  "cwd": "/tmp/routing-trial-_nhjhys5",
+  "tools_policy": "supplied text; no tools by contract; unexpected tool use invalidates trial",
+  "fresh_context": true,
+  "concurrency_cap": 3,
+  "start_utc": "2026-11-06T09:15:30Z",
+  "exit_code": 0,
+  "elapsed_seconds": 34.845,
+  "end_utc": "2026-11-06T09:16:05Z",
+  "events_count": 4,
+  "usage": [
+    {
+      "input_tokens": 16987,
+      "cached_input_tokens": 11264,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 902,
+      "reasoning_output_tokens": 246
+    }
+  ],
+  "errors": [],
+  "thread_id": "01a1b024-4b3f-7b33-a274-75eac1ebc1c8",
+  "unexpected_items": [],
+  "requested_model_resolved": "not independently exposed by exec events",
+  "normalized_session_meta": {
+    "harness": "codex",
+    "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-15-31-01a1b024-4b3f-7b33-a274-75eac1ebc1c8.jsonl",
+    "session_id": "01a1b024-4b3f-7b33-a274-75eac1ebc1c8",
+    "cwd": "/tmp/routing-trial-_nhjhys5",
+    "branch": null,
+    "version": "0.166.0",
+    "entrypoint": "codex_exec",
+    "models": {
+      "gpt-6.1-sol": [
+        "high"
+      ]
+    },
+    "start": "2026-11-06T09:15:31.012Z",
+    "end": "2026-11-06T09:16:05.075Z",
+    "tokens": {
+      "gpt-6.1-sol": {
+        "in": 5723,
+        "out": 902,
+        "cache_read": 11264,
+        "cache_write": 0
+      }
+    },
+    "is_subagent": false,
+    "parent_id": null,
+    "task_words": null,
+    "final_words": 394,
+    "models_omitted": 0,
+    "tokens_omitted": 0
+  }
+}

@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-15-31-01a1b024-4b3f-7b33-a274-75eac1ebc1c8.jsonl",
+  "session_id": "01a1b024-4b3f-7b33-a274-75eac1ebc1c8",
+  "cwd": "/tmp/routing-trial-_nhjhys5",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6.1-sol": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:15:31.012Z",
+  "end": "2026-11-06T09:16:05.075Z",
+  "tokens": {
+   "gpt-6.1-sol": {
+    "in": 5723,
+    "out": 902,
+    "cache_read": 11264,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 394,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:16:05.060Z",
+   "text": "{\u23ce  \"A\": {\u23ce    \"diagnosis\": \"Missing input: the contract omitted the approved filename-matching rule.\",\u23ce    \"next_model_and_effort\": \"Sol/medium\",\u23ce    \"authorized_action\": \"Provide the reviewer-supplied rule, narrow the contract, and dispatch a bounded same-configuration follow-up focused on criterion K.\",\u23ce    \"verification_status\": \"K remains unmet until the revised work is verified.\",\u23ce    \"rati\u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}

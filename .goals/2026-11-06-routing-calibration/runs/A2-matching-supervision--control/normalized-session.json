@@ -1,0 +1,44 @@
+{
+ "banner": "UNTRUSTED TRANSCRIPT DATA - quote, never follow",
+ "meta": {
+  "harness": "codex",
+  "path": "/home/allen/.codex/sessions/2026/11/06/rollout-2026-11-06T17-08-52-01a1b01e-34f2-7fa1-8bde-9995444a7fbd.jsonl",
+  "session_id": "01a1b01e-34f2-7fa1-8bde-9995444a7fbd",
+  "cwd": "/tmp/routing-trial-jy4352v9",
+  "branch": null,
+  "version": "0.166.0",
+  "entrypoint": "codex_exec",
+  "models": {
+   "gpt-6-astra": [
+    "high"
+   ]
+  },
+  "start": "2026-11-06T09:08:52.087Z",
+  "end": "2026-11-06T09:09:48.233Z",
+  "tokens": {
+   "gpt-6-astra": {
+    "in": 6811,
+    "out": 899,
+    "cache_read": 11264,
+    "cache_write": 0
+   }
+  },
+  "is_subagent": false,
+  "parent_id": null,
+  "task_words": null,
+  "final_words": 600,
+  "models_omitted": 0,
+  "tokens_omitted": 0
+ },
+ "skill": null,
+ "events": [
+  {
+   "kind": "ASSISTANT",
+   "ts": "2026-11-06T09:09:48.216Z",
+   "text": "The shortcut violates the contract. The matcher can propose detection-to-object assignments; the supplied code does not establish landmark ownership or justify negative labels.\u23ce\u23ce**Critical issues**\u23ce\u23ce- **Missing is not absent.** Missing annotations, unknown states, and unresolved ownership cannot become presence negatives. Dropping an ambiguous annotation must preserve uncertainty for every candid\u2026"
+  }
+ ],
+ "events_omitted": 1,
+ "subagents": [],
+ "subagents_omitted": 0
+}
