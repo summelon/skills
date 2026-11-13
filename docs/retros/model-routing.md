@@ -5,6 +5,7 @@
 | --- | --- | --- | --- | --- |
 | 2026-10-07/F1 | accepted | approved by the user ("continue on your proposed change") with the "rejected twice" clause; static review only | 2026-10-07 | |
 | 2026-10-07/F2 | accepted | approved by the user; static review only | 2026-10-07 | |
+| coordinator 2026-11-13/F2–F4 | accepted | placements from the coordinator retro (budget levels replace the session ceiling; settled design is T1; first correction only on resume); see `docs/retros/coordinator.md` §Retro 2026-11-13; static | 2026-11-13 | |
 
 (fate: proposed | accepted | rejected | deferred)
 

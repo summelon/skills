@@ -14,9 +14,10 @@ disable-model-invocation: true
 
    Done when the pointer validates, you have read the goal's README, plan, and verification records, and you have noted `git rev-parse HEAD` as the run's start.
 
-2. **Coordinate.** Invoke `/coordinator` with the goal as the task: its plan is the spec, its gates in `verification.md` are the acceptance criteria. The rules below layer on top; where they conflict, these win.
+2. **Coordinate.** Invoke `/coordinator` with the goal as the task: its plan is the spec, its gates in `verification.md` are the acceptance criteria. Pass through the budget the user named (`/makasero lean`); none named means `standard`. The rules below layer on top; where they conflict, these win.
    - **Decide and log.** A decision `/coordinator` would put to the user (scope, product, configuration) takes your recommended answer. Record it in the plan's Locked decisions as an assumption the user can override, then continue.
    - **Stop points.** Stop and ask only before a destructive or outward action (push, force, deleting a file this run did not create), or when a gate cannot be met as agreed: that needs renewed alignment per `/aligning-targets`.
+   - **Review bound.** When `/coordinator`'s review bound leaves any finding open, mark the affected gate pending user review and continue.
    - **Commit.** This invocation authorizes local commits. After each accepted change passes its verification, commit it alone, in the repo's conventional-commit style, running the `/tracking-goals` commit checkpoint so the goal records it changed land in the same commit. Amend only commits made in this run, and never push: pushing stays with the user.
 
    Done when every gate has evidence, or is explicitly pending user review, or is reported unmet with its evidence.

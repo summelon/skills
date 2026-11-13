@@ -17,7 +17,7 @@ Leave `agent_type` unset. GPT-6 and GPT-6.1 sessions get the v2 tools (verified 
 
 - **v2:** `wait_agent` returns when any worker's message arrives, and `list_agents` shows who is still running.
 - **v1:** `wait_agent` takes the worker ids.
-- **Missing input:** `followup_task` (v2) or `send_input` (v1) to the same worker with the new evidence.
+- **Same contract only:** `followup_task` (v2) or `send_input` (v1) an existing worker to supply input its contract lacked, to send the first correction of its own change, to re-review the correction of its own findings, or to resume it after an interruption. A new task, or a second correction, goes to a fresh worker.
 - **A new model or effort:** a new spawn.
 
 ## Limits
@@ -27,4 +27,4 @@ Leave `agent_type` unset. GPT-6 and GPT-6.1 sessions get the v2 tools (verified 
 
 ## Main-session adapter
 
-`codex -p coordinator` layers `$CODEX_HOME/coordinator.config.toml` (gpt-6.1-sol at high effort) over your config; then invoke `$coordinator <task>`. Use the coordinator's worker ceiling from `/model-routing`. The profile holds no instructions, because workers inherit `developer_instructions`.
+`codex -p coordinator` layers `$CODEX_HOME/coordinator.config.toml` (gpt-6.1-sol at high effort) over your config; then invoke `$coordinator <task>`. Use the budget's worker ceiling from `/model-routing`. The profile holds no instructions, because workers inherit `developer_instructions`.

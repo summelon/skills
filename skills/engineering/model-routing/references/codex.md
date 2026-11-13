@@ -12,10 +12,10 @@ Codex applies these overrides only when instructions ask for them, and this skil
 | --- | --- | --- | --- | --- |
 | T0 | `gpt-6-luna` | `low`: a single lookup | `high`: enumeration, mapping, mechanical edits | `xhigh` |
 | T1 | `gpt-6.1-sol` | none | `low` (the client default) | `medium` |
-| T2 | `gpt-6-astra` | none | `medium` | `high` |
-| T3 | `gpt-6-astra` | none | `xhigh` | `max` |
+| T2 | `gpt-6.1-sol` (`gpt-6-astra` at `deep`) | none | `medium` | `high` (`lean`: none) |
+| T3 (`deep` only) | `gpt-6-astra` | none | `xhigh` | `max` |
 
-Starts follow OpenAI's Codex guidance: 6.1-sol at its client default, Luna at high. Astra's official start is low, but T2 work is by definition the planning and analysis that guidance says to raise effort for, so it starts at medium. Efforts don't map across models: compare within a row only.
+Starts follow OpenAI's Codex guidance: 6.1-sol at its client default, Luna at high. T2 work is by definition the planning and analysis that guidance says to raise effort for, so it starts at medium, above Astra's official start of low. Efforts don't map across models: compare within a row only.
 
 Never route a worker to `ultra`: it switches the child into proactive delegation, spawning its own subagents, which breaks the contract's "spawning no agents". `max` is the top worker effort (T3 up only).
 
@@ -23,13 +23,13 @@ The slugs come from `$CODEX_HOME/models_cache.json`. When one disappears from th
 
 ## Ceiling
 
-Your session's `model` and `model_reasoning_effort` come from the active config, where `codex -p <name>` layers `$CODEX_HOME/<name>.config.toml` over `config.toml`. Assume high when you cannot tell. An astra session at xhigh or above admits T3, and only an astra/max session admits T3's up step.
+The budget in `/model-routing` sets the ceiling. At `lean`, T2 is `gpt-6.1-sol` at medium only, and a same-harness verifier runs at that medium too. At `standard`, T2 is `gpt-6.1-sol`, medium then high. At `deep`, the ceiling is the session's own `model` and `model_reasoning_effort` (from the active config, where `codex -p <name>` layers `$CODEX_HOME/<name>.config.toml` over `config.toml`; assume high when you cannot tell), T2 is `gpt-6-astra` (start `medium`, up `high`), and T3 enters only on an astra session at xhigh or above; its up step needs astra/max.
 
-A `gpt-6.1-sol` session at `high` or above dispatching under `/coordinator` uses **the worker ceiling of a `gpt-6-astra`/high session**: T2 Astra workers and Opus reviewers remain eligible up to high, and lower tiers retain their existing effort choices. Worker tier mappings and T3 entry stay unchanged. Sol sessions and workers outside the coordinator role retain the ordinary session-based ceiling.
+A `gpt-6.1-sol` session at `high` or above dispatching under `/coordinator` at `deep` uses **the worker ceiling of a `gpt-6-astra`/high session**: T2 Astra workers and Opus reviewers remain eligible up to high, and lower tiers retain their existing effort choices. T3 entry stays unchanged.
 
 ## Cross-harness verifier: Claude Code
 
-Map T1 to `sonnet` and T2 to `opus`, at `--effort high`, capped by your ceiling. Write the contract to a scratch file, then run:
+Map T1 to `sonnet` and T2 to `opus`, at `--effort high`; this reviewer is the budget ceiling's one exception. Write the contract to a scratch file, then run:
 
 ```bash
 claude -p --restricted --model opus --effort high --no-session-persistence \
@@ -66,3 +66,5 @@ Treat it as unavailable when `command -v claude` fails, the run exits non-zero, 
   - `agent/child_config.rs`: the effort must be in the target model's supported levels.
   - `config/mod.rs`: v2 runs 3 subagents at once by default, raised with `agents.max_concurrent_threads_per_session`.
   - Children inherit the parent's sandbox and `developer_instructions`.
+- [Codex pricing](https://developers.openai.com/codex/pricing): credits per 1M in/out: Astra 250/1,250, Sol 50/250, Luna 2.5/12.5.
+- The repo's pilot `.goals/2026-11-06-routing-calibration/`: Sol passed the bounded-analysis and known-defect review cases; concurrency, security and migrations were not covered.

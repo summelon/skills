@@ -28,16 +28,17 @@ Workers write application code, tests, and configuration. When you reach for a t
 
 ## Loop
 
-1. **Frame.** State the goal, constraints, and acceptance criteria. Put decisions that belong to the user (product, scope, configuration) to the user. Done when every acceptance criterion is checkable.
+1. **Frame.** State the goal, constraints, and acceptance criteria. Put decisions that belong to the user (product, scope, configuration) to the user. Note the budget the user named (`lean`, `standard`, `deep`; none means `standard`); `/model-routing` defines them. Done when every acceptance criterion is checkable.
 2. **Graph.** Split the work into tasks with dependencies and file ownership.
    - Run reads in parallel freely.
    - Run writers in parallel only on disjoint file sets, with one writer per subsystem at a time. The usual shape is parallel exploration, then your synthesis, then one implementation worker.
    - Dispatch a worker only when its result can change a decision; do trivial orchestration inline.
+   - Size an implementation task to one reviewable slice; when a contract needs both a design and its implementation, or spans subsystems, split it.
 3. **Route.** Run `/model-routing` for each significant dispatch. Its routing record goes in visible text in the message that makes the dispatch.
 4. **Dispatch** each task with a task contract. Before the first implementation dispatch, record the base commit (`git rev-parse HEAD`); every review names its exact range `base..head`.
-5. **Collect.** Check each digest's evidence against the acceptance criteria; a claim without evidence is unverified.
-6. **Verify.** The implementer's contract runs the objective checks (tests, typecheck, build). Check the change against the verifier triggers; when one holds, the change needs a verifier's accept.
-7. **Decide.** Adjudicate each finding from its cited evidence and send the author only the findings that hold. Then accept, or dispatch a narrowly scoped correction per `/model-routing`'s failure diagnosis. The correction's contract carries the exact failing checks and the decisive log lines, plus the narrowed objective. A corrected change goes back to a verifier, scoped to the last reviewed head `..` the new head plus the open findings, before you accept it.
+5. **Collect.** Check each digest's evidence against the acceptance criteria; a claim without evidence is unverified. A worker or background command that outlives its expected duration gets a status check; never wait on it silently.
+6. **Verify.** The implementer's contract runs the objective checks (tests, typecheck, build). Check the change against the verifier triggers; when one holds, the change needs a verifier's accept, or the review bound in step 7.
+7. **Decide.** Adjudicate each finding from its cited evidence and send the author only the findings that hold. Then accept, or dispatch a narrowly scoped correction per `/model-routing`'s failure diagnosis. The correction's contract carries the exact failing checks and the decisive log lines, plus the narrowed objective. A correction for a rejected change goes back to the same reviewer route (model, harness, effort) once, scoped to the last reviewed head `..` the new head plus the open findings: resume the reviewing worker where the harness keeps it, otherwise a fresh run whose contract carries the prior findings. Review is bounded to two rounds, and at `lean` the first round is the last. Findings still open after the last round get one more correction, checked by the contract's VERIFICATION commands; then accept the change with every open finding listed as an open risk in the report, its evidence line recording the rejects. Verifier triggers apply to a change's first review; a correction never starts a new review beyond this bound. An accept ends the loop: fix or record its low findings without another review.
 8. **Report** what changed, the routing used, one evidence line per accepted change, and the open risks.
 
 The session is complete when every acceptance criterion is met with evidence from a worker or verifier, or has been reported to the user as unmet, with its evidence.
@@ -54,7 +55,8 @@ CONSTRAINTS    interfaces to keep, approaches already ruled out
 ACCEPTANCE     checkable criteria
 VERIFICATION   the commands to run before returning
 RETURN         a digest under 300 words: changes or findings with paths, evidence,
-               verification run and result, remaining uncertainty.
+               verification run and result, remaining uncertainty,
+               paths of any scripts or notes a successor needs.
                Quote only the decisive log lines.
 
 Complete this task yourself, spawning no agents. Work only within SCOPE.
@@ -80,6 +82,8 @@ Add a fresh verifier for any of these:
 id  severity  file:line  observation  trigger  evidence: static | reproduced | check-failed
     (reproduced or check-failed: the command and its decisive output)  recommendation
 ```
+
+A finding must sit in the range and affect correctness or an acceptance criterion. Style, and defects the range did not introduce, go in a separate `out of scope` list that never causes a reject.
 
 A reviewer that ran nothing produces `static` findings only, and its accept says nothing about whether the code builds or passes tests. When a claim needs a run (build, tests, integration, device behavior), the verifier executes in a disposable worktree: read [references/verification.md](references/verification.md) for the lanes, the GPU smoke test, and the mutation check.
 

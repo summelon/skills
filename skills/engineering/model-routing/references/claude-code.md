@@ -24,7 +24,7 @@ No profile runs at low effort: work light enough for low effort is T0.
 
 ## Ceiling
 
-Your system prompt names your model. Your effort is the session's `--effort` or `/effort` level; assume high when you cannot tell. An `opus` session at high or above admits every T2 row. Only a `fable` session admits T3.
+The budget in `/model-routing` sets the ceiling. At `lean`, T2 work routes to sonnet + `worker-deep`. At `standard`, every T2 row is open. At `deep`, the ceiling is the session's own model and effort (your system prompt names the model; effort is the session's `--effort` or `/effort` level, high when you cannot tell), and only a `fable` session admits T3.
 
 ## Fable
 
@@ -34,7 +34,7 @@ Your system prompt names your model. Your effort is the session's `--effort` or 
 
 ## Cross-harness verifier: Codex
 
-Map T1 to `gpt-6.1-sol` and T2 to `gpt-6-astra`. Use that tier's Codex "up" effort, capped by your ceiling: an opus/high session caps astra at high. Write the contract to a scratch file, then run this in the background and read only the verdict file:
+Map T1 to `gpt-6.1-sol` and T2 to `gpt-6-astra`. Use that tier's Codex "up" effort, which is high. The cross-harness reviewer is the one exception to the budget ceiling. Write the contract to a scratch file, then run this in the background and read only the verdict file:
 
 ```bash
 codex exec --sandbox read-only --ephemeral -C "$REPO" \

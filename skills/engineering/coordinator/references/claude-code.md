@@ -17,7 +17,7 @@ Put independent tasks in one message so they run in parallel. Set `run_in_backgr
 
 ## Follow up
 
-- **Missing input**: `SendMessage` to the same worker with the new evidence; its context is intact.
+- **Same contract only**: `SendMessage` an existing worker to supply input its contract lacked, to send the first correction of its own change, to re-review the correction of its own findings, or to resume it after an interruption. A new task, or a second correction, goes to a fresh worker.
 - **A new profile or model**: a new `Agent` call with a fresh contract.
 
 ## Main-session adapter
