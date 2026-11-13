@@ -19,4 +19,4 @@ A retro with runs executes as a `/coordinator` session at `lean`; the lead holds
 
 ## Next action
 
-Forward-test a real `/skill-retro` run; review the last Codex correction.
+Forward-test a real `/skill-retro` run as follow-up work. On 2026-11-14 the user confirmed the goal is reviewed and authorized merging it into `main`; no further review is required for this cleanup.

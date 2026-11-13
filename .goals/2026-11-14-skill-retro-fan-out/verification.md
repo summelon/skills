@@ -18,8 +18,8 @@ Goal: [2026-11-14-skill-retro-fan-out](README.md)
 
 ## Deviations
 
-G2 closed without an accept: the user chose to commit with the review state stated. No forward-test ran.
+G2 closed without a recorded Codex accept: the user chose to commit with the review state stated. During cleanup on 2026-11-14, the user confirmed "The goal is reviewed and can be merge back." This clears the pending user disposition for merging; it does not supply a Codex acceptance result. No forward-test ran.
 
 ## Reproduction
 
-`git show HEAD -- skills/ docs/retros/skill-retro.md`.
+`git show ada9c94ca1106a2064589d3b81d575aeb1be108a -- skills/ docs/retros/skill-retro.md`.
