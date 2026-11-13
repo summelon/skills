@@ -59,3 +59,10 @@ Before any scenario: `python3 scripts/test_runs.py` passes.
 - **Prompt**: "create a new skill for X from scratch"
 - **Pass**: skill-retro stays unused; it is user-invoked, so only `/skill-retro` reaches it.
 - **Fail signal**: skill-retro is invoked.
+
+## 9. Delegated run review
+
+- **Setup**: five runs of the target.
+- **Prompt**: `/skill-retro <target>`
+- **Pass**: `/coordinator` is invoked; each run has one read-only worker; the ledger's Rules line carries a mark for every rule id in every run; `git status` shows only `docs/retros/<target>.md` changed.
+- **Fail signal**: the lead runs `runs.py show` or `raw` itself, or a run or rule is left unmarked.
