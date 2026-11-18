@@ -6,6 +6,7 @@
 | 2026-10-07/F1 | accepted | approved by the user ("continue on your proposed change") with the "rejected twice" clause; static review only | 2026-10-07 | |
 | 2026-10-07/F2 | accepted | approved by the user; static review only | 2026-10-07 | |
 | coordinator 2026-11-13/F2–F4 | accepted | placements from the coordinator retro (budget levels replace the session ceiling; settled design is T1; first correction only on resume); see `docs/retros/coordinator.md` §Retro 2026-11-13; static | 2026-11-13 | |
+| 2026-11-18/F1 | accepted | User approved. Executed baseline and candidate routing scenarios passed. | 2026-11-18 | |
 
 (fate: proposed | accepted | rejected | deferred)
 
@@ -74,3 +75,55 @@ What worked (no change): the cross-harness verifier rejected or found defects in
 - Codex T1 at `low` for a read-only branch comparison (01a10a16 11:31:41) took 8 m 57 s, against 2 m 31 s for a similar Luna/high lookup (01a10b43 16:55:01). Single-instance, and a T0 lookup would have fit. Nothing suggests the T1 start is wrong.
 - 2c744fb0 never ran `/model-routing`. That is a coordinator rule (step 3), a placement outside this skill. Single-instance.
 - Duplicated lookup: 318831e3 dispatched the same "where is the support set defined" lookup twice (16:48:18, 16:57:21) after the user re-sent a message. Coordinator behaviour, one-off.
+
+## Retro 2026-11-18
+
+Scanned through: 01a1ea01 2026-11-17T23:08:57+08:00
+
+Window: `find model-routing --since 2026-10-05 --limit 10` after the previous anchor. Ten sessions (nine Codex, one Claude), all at inferred revision `72c7b4f`. Eight dispatched workers. These runs establish which settings were exercised. A controlled 6.2 comparison remains outstanding.
+
+### Rules checklist
+
+1. R1 Select tier and effort independently and map them to the harness.
+2. R2 Read the harness mapping before dispatch.
+3. R3 Route by difficulty and risk, including settled designs at T1.
+4. R4 Reserve T3 for outcome-briefed long investigations at deep within ceiling.
+5. R5 Start at the mapped effort and adjust one step for checkability, breadth of reasoning or verification.
+6. R6 Respect budget-specific model and effort ceilings, including the documented Sol-high deep allowance. Stop at the ceiling.
+7. R7 Diagnose failures from evidence, apply one retry route, resume only the first correction, bound retries and inspect the spec after two rejects.
+8. R8 Route fresh verification by change risk, with the implementer tier floor, verifier effort and budget triggers.
+9. R9 Standard/deep T2 verification tries the other harness first, then uses the qualifying fresh fallback on unavailability.
+10. R10 Announce the configuration, reason and escalation path per significant dispatch.
+11. R11 Supply Claude model and worker profile explicitly and follow the harness mapping for lookup and horizon work.
+12. R12 Supply Codex model, effort and fresh context, omit agent type, cap workers below Ultra and use supported successor IDs.
+13. R13 Use the restricted cross-harness command, verdict file and 15-minute bound.
+
+F = followed on observed dispatches, D = deviated, U = unobservable, dash = inapplicable. Mixed marks indicate different dispatches or clauses. Encryption limited inspection of some worker briefs. R12 marks describe spawn parameters. F1 separately assesses the successor rule against the release.
+
+| Session (local date) | R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 | R9 | R10 | R11 | R12 | R13 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 01a1ea01 Nov 17 | F | F | F | – | F | F | – | F | F | F | – | F | F |
+| 01a1e86d Nov 17 | F | F | F | – | F | F | U | F | – | F/U | – | F | – |
+| 01a1e801 Nov 17 | U | F | F | – | F | F | – | F | U | U | – | F | – |
+| e49c3354 Nov 17 (Claude) | F | F | F | – | F | F | F/U | F | F | F/U | F | – | D |
+| 01a1e794 Nov 17 | F | F | F | – | F | F | – | F | – | F | – | F | – |
+| 01a1e76d Nov 17 | F | F | F | – | F | F | F | F | F | F/U | – | F | F |
+| 01a1e763 Nov 17 | F | F | F | – | F | F | – | F | – | F | – | F | – |
+| 01a1e3cc Nov 16 | F | F | F | – | F | F | F | F | F | F | – | F | F |
+| 01a1e3cb Nov 16 | – | F | – | – | – | – | – | – | – | – | – | – | – |
+| 01a1e3ca Nov 16 | – | – | – | – | – | – | – | – | – | – | – | – | – |
+
+### 2026-11-18/F1 Refresh the active Codex routes for GPT-6.2
+
+- **Class and strength** — prompt-refine, cross-session use of the previous routes. Raw-checked on Nov 17: 01a1e763 10:47:23 used Sol 6.1 low, 01a1ea01 22:57:44 used Sol 6.1 high, and e49c3354 13:16:57 used Astra 6 high for a Codex review. The previous releases worked in these sessions.
+- **Cause** — the live routing tables still encode the September model guidance. OpenAI released both successors November 17. Its Codex guidance assigns everyday work to Sol and the hardest sustained projects to Astra. The local catalog on November 18 lists both at default low. [Release](https://openai.com/index/introducing-gpt-6-2-astra-sol/) · [Codex models](https://learn.chatgpt.com/docs/models) · [Changelog](https://learn.chatgpt.com/docs/changelog)
+- **Exact edit** — in model-routing's SKILL.md tier, budget and example tables and references/codex.md tier mapping and ceilings, replace active Sol 6.1 with `gpt-6.2-sol` and active Astra 6 with `gpt-6.2-astra`. Update the Codex verifier commands and live mappings in references/claude-code.md too. Preserve T0 Luna where available. In references/codex.md replace the September source summary with the November 18 verification: “Start Sol and Astra at the client-selected effort. This catalog defaults both to low. Use Sol medium for implementation that needs additional reasoning, and Astra medium for complex projects that require adapting the plan.” Document xhigh examples for multistep testing/revision (Sol) and open-ended tradeoffs (Astra). Retain the approved standard-budget Sol T2 route, deep Astra route, verifier floors and worker ceiling below Ultra. Update the Codex credit comparison (Astra 200/10/1000, Sol 50/2.5/250 per million input/cached input/output tokens). Preserve dated historical evidence with its original model IDs. [Model-selection guide](https://developers.openai.com/api/docs/guides/model-selection) · [Codex pricing](https://learn.chatgpt.com/docs/pricing)
+- **Critique** — replaces existing entries, with effort examples in the harness reference. Risks include clients with older catalogs and mistaking API effort examples for Codex defaults. The available model list and the existing budget ceiling govern each dispatch. The reviewed runs establish no 6.2 success-rate or cost advantage.
+- **Status** — accepted, executed routing simulation against baseline and candidate. The routine endpoint changed from Sol 6.1/low to Sol 6.2/low. The cross-module scheduling investigation moved from Sol 6.1/high to Sol 6.2/high at standard budget and from Astra 6/high to Astra 6.2/high at deep. The Claude-launched T2 reviewer moved from Astra 6/high to Astra 6.2/high. Both workers identified the Ultra restriction. Independent review also checked the catalog defaults, published Standard-speed credit rates, and compatibility with the installed Sol 6.1/high coordinator profile. Skill structure and whitespace checks passed. Real project performance on the updated rules remains unmeasured.
+
+### Reported, no edit
+
+- e49c3354 set a 30-minute timeout twice (13:16:57 and 13:30:35). Both reviews finished within 15 minutes. Repeated within one session, command drift.
+- 01a1e801 used two same-harness high-effort source reviewers at 13:38:54 and 13:39:03. The evidence leaves their role as formal change verifiers uncertain. Single-instance.
+- 01a1e3cc at 18:13:15 correctly fell back to a fresh Sol/high reviewer after an Opus quota failure. Two other Nov 16 sessions stopped for a missing goal selector before dispatch.
+- Scope corrections in 01a1e76d (11:30:59) and 01a1e86d (16:13), and e49c3354's inconsistent final compilation report (worker compilation acknowledged 13:03:37), concern coordinator scope and reporting. Missing indexes, stale search paths and a missing Python alias were environment friction.

@@ -34,11 +34,11 @@ The budget in `/model-routing` sets the ceiling. At `lean`, T2 work routes to so
 
 ## Cross-harness verifier: Codex
 
-Map T1 to `gpt-6.1-sol` and T2 to `gpt-6-astra`. Use that tier's Codex "up" effort, which is high. The cross-harness reviewer is the one exception to the budget ceiling. Write the contract to a scratch file, then run this in the background and read only the verdict file:
+Map T1 to `gpt-6.2-sol` and T2 to `gpt-6.2-astra`. Use that tier's Codex "up" effort, which is high. The cross-harness reviewer is the one exception to the budget ceiling. Write the contract to a scratch file, then run this in the background and read only the verdict file:
 
 ```bash
 codex exec --sandbox read-only --ephemeral -C "$REPO" \
-  -m gpt-6-astra -c model_reasoning_effort=high \
+  -m gpt-6.2-astra -c model_reasoning_effort=high \
   -o "$SCRATCH/verdict.md" - < "$SCRATCH/contract.md"
 ```
 

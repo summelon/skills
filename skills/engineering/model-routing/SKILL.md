@@ -19,9 +19,9 @@ Your spawn tool names your harness: `Agent` means Claude Code, so read [referenc
 | Tier | The worker must… | Claude Code | Codex |
 | --- | --- | --- | --- |
 | T0 lookup | produce an answer you can check yourself: locate, list, map, run and report, classify output | haiku | gpt-6-luna |
-| T1 routine | follow a clear spec or a known cause, or enumerate where a miss would go unnoticed | sonnet | gpt-6.1-sol |
-| T2 hard | resolve ambiguity: unknown root cause, design judgment, concurrency, security, public API, data migration, cross-module coupling | opus | gpt-6.1-sol (`gpt-6-astra` at `deep`) |
-| T3 horizon (`deep` only) | carry a long autonomous investigation that resists decomposition | fable | gpt-6-astra at xhigh |
+| T1 routine | follow a clear spec or a known cause, or enumerate where a miss would go unnoticed | sonnet | gpt-6.2-sol |
+| T2 hard | resolve ambiguity: unknown root cause, design judgment, concurrency, security, public API, data migration, cross-module coupling | opus | gpt-6.2-sol (`gpt-6.2-astra` at `deep`) |
+| T3 horizon (`deep` only) | carry a long autonomous investigation that resists decomposition | fable | gpt-6.2-astra at xhigh |
 
 - Breadth alone is not difficulty: searching 200 files for a symbol is still T0.
 - T3 is a special route, not the rung above T2: Opus 5.5 matches or beats Fable 5.1 on agentic coding. Use it only at `deep`, and brief it with the outcome rather than the steps.
@@ -40,9 +40,9 @@ The user names a budget in the invocation (`/coordinator lean <task>`, `/makaser
 
 | Budget | Worker ceiling (Claude Code · Codex) | T2 route | Verifier |
 | --- | --- | --- | --- |
-| `lean` | sonnet/high · 6.1-sol/medium | sonnet + worker-deep · 6.1-sol/medium | on a trigger only; same harness; one round |
-| `standard` | opus/high · 6.1-sol/high | opus, start then up · 6.1-sol, medium then high | T2 verification cross-harness at high on a trigger: astra from Claude Code, opus from Codex |
-| `deep` | the session's own model and effort | opus + worker-deep · astra, medium then high; T3 admitted | as `standard` |
+| `lean` | sonnet/high · 6.2-sol/medium | sonnet + worker-deep · 6.2-sol/medium | on a trigger only; same harness; one round |
+| `standard` | opus/high · 6.2-sol/high | opus, start then up · 6.2-sol, medium then high | T2 verification cross-harness at high on a trigger: 6.2-astra from Claude Code, opus from Codex |
+| `deep` | the session's own model and effort | opus + worker-deep · 6.2-astra, medium then high; T3 admitted | as `standard` |
 
 No worker goes above the budget's ceiling: no stronger model, and no higher effort on the ceiling model. The cross-harness reviewer in the Verifier column is the one stated exception. Tiers align across harnesses by the Tier table. At `deep`, when your own effort is not visible to you, assume high.
 
@@ -85,9 +85,9 @@ next   try → worker-deep + sonnet · know → worker-standard + opus
 | --- | --- | --- | --- | --- |
 | Find where `Foo` is constructed | T0 · down | routine | worker-standard + haiku | luna / low |
 | Map the files and entry points of the `auth` module | T0 · start | routine | worker-standard + haiku | luna / high |
-| Implement a well-specified endpoint | T1 · start | routine | worker-standard + sonnet | 6.1-sol / low |
-| Retry after that fix skipped the integration tests | T1 · up | thoroughness | worker-deep + sonnet | 6.1-sol / medium |
-| Retry after a thorough diagnosis that was still wrong | T2 · start | capability | worker-standard + opus | 6.1-sol / medium |
-| Debug an intermittent concurrency failure | T2 · up | capability | worker-deep + opus | 6.1-sol / high |
-| Verify a shared-memory lifetime change | T2 · up, cross-harness | capability | `codex exec` astra / high | `claude -p` opus / high |
+| Implement a well-specified endpoint | T1 · start | routine | worker-standard + sonnet | 6.2-sol / low |
+| Retry after that fix skipped the integration tests | T1 · up | thoroughness | worker-deep + sonnet | 6.2-sol / medium |
+| Retry after a thorough diagnosis that was still wrong | T2 · start | capability | worker-standard + opus | 6.2-sol / medium |
+| Debug an intermittent concurrency failure | T2 · up | capability | worker-deep + opus | 6.2-sol / high |
+| Verify a shared-memory lifetime change | T2 · up, cross-harness | capability | `codex exec` 6.2-astra / high | `claude -p` opus / high |
 | Review a one-line typo fix | T0 · start | routine | worker-standard + haiku | luna / high |
